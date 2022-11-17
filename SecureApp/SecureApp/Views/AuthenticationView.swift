@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AuthenticationView: View {
+   @EnvironmentObject var authentication: Authentication
    @State private var scale: CGFloat = 1
    @ObservedObject var viewModel: SettingsViewModel
    @State var biometricType: SettingsViewModel.BiometricType
@@ -15,59 +16,68 @@ struct AuthenticationView: View {
    @State private var animate = false
    
    var body: some View {
-      
-      ZStack {
-         settingsViewModel.colors[settingsViewModel.accentColorIndex].ignoresSafeArea()
-         
-         VStack {
-            Image(systemName: "lock.fill")
-               .resizable()
-               .scaledToFit()
-               .frame(minWidth: 10, idealWidth: 50, maxWidth: 100, minHeight: 0, idealHeight: 50, maxHeight: 100, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-               .foregroundColor(.white)
-               .font(.system(size: 80))
-               .scaleEffect(scale)
-               .animateForever { scale = 0.90 }
-               .padding(60)
+      NavigationView {
+         ZStack {
+            settingsViewModel.colors[settingsViewModel.accentColorIndex]
+               .ignoresSafeArea()
             
-            Spacer()
+            VStack {
+               Image(systemName: "lock.fill")
+                  .resizable()
+                  .scaledToFit()
+                  .frame(maxWidth: 100, maxHeight: 100)
+                  .foregroundColor(.white)
+                  .font(.system(size: 80))
+                  .scaleEffect(scale)
+                  .animateForever { scale = 0.90 }
+                  .padding()
+               
+               Spacer()
+               
+               // MARK: - Login
+               VStack {
+                  Button(action: {
+                     if viewModel.biometricAuthentication() {}
+                  },
+                         label: {
+                     Label(
+                        title: { biometricType == .face ? Text("Unlock with Face ID") : biometricType == .touch ? Text("Unlock with Touch ID") : Text("Enter device passcode") },
+                        icon: { Image(systemName: adaptiveImage(biometricType: biometricType)) }
+                     )})
+                  .foregroundColor(.white)
+                  .padding()
+                  .overlay(Capsule().stroke(Color.white, lineWidth: 1))
+               }
+               .padding()
+            }
             
-            Button(action: {
-               if viewModel.biometricAuthentication() {
-                  // MARK: - Login
+            .onAppear(perform: {
+               biometricType = viewModel.biometricType()
+               
+               if settingsViewModel.unlockMethodIsActive == false {
+                  settingsViewModel.isUnlocked = true
+                  print("No biometric authentication")
                }
                
-            },
-                   label: {
-               Label(
-                  title: { biometricType == .face ? Text("Unlock with Face ID") : biometricType == .touch ? Text("Unlock with Touch ID") : Text("Enter device passcode") },
-                  icon: { Image(systemName: adaptiveImage(biometricType: biometricType)) }
-               )})
-            .foregroundColor(.white)
-            .padding()
-            .overlay(RoundedRectangle(cornerRadius: 25)
-               .stroke(Color.white, lineWidth: 1))
+               if settingsViewModel.unlockMethodIsActive == true {
+                  if settingsViewModel.biometricAuthentication() {
+                  }
+                  print("Biometric authentication")
+               }
+            })
             
          }
+         .transition(.identity)
          
-         .onAppear(perform: {
-            biometricType = viewModel.biometricType()
-            
-            if settingsViewModel.unlockMethodIsActive == false {
-               settingsViewModel.isUnlocked = true
-               print("No biometric authentication")
+         .toolbar {
+            Button {
+               authentication.updateValidation(success: false)
+            } label: {
+               Text("Logout")
+                  .foregroundColor(.white)
             }
-            
-            if settingsViewModel.unlockMethodIsActive == true {
-               if settingsViewModel.biometricAuthentication() {
-               }
-               print("Biometric authentication")
-            }
-         })
-         
+         }
       }
-      .statusBar(hidden: true)
-      .transition(.identity)
    }
 }
 

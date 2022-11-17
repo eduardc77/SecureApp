@@ -25,7 +25,7 @@ struct OnboardingView: View {
          Spacer()
          
          VStack(alignment: .leading) {
-            OnboardingCell(image: "key.fill",
+            OnboardingCell(image: "key.viewfinder",
                            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                            title: "Secure")
             .padding()

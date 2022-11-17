@@ -14,7 +14,7 @@ struct PrivacyModeToggle: View {
       Toggle(isOn: $settingsViewModel.privacyMode,
              label: {
          Label(title: { Text("Background Privacy") },
-               icon: { Image(systemName: "eye.slash") })
+               icon: { Image(systemName: "eye.slash").font(.title3) })
       })
       .toggleStyle(SwitchToggleStyle(tint: settingsViewModel.colors[settingsViewModel.accentColorIndex]))
    }

@@ -26,6 +26,14 @@
 		DD593401292648DB00C79D57 /* AccentColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD593400292648DB00C79D57 /* AccentColorPicker.swift */; };
 		DD5934032926574900C79D57 /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5934022926574900C79D57 /* PopupView.swift */; };
 		DD59340629265E5A00C79D57 /* NotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59340529265E5A00C79D57 /* NotesView.swift */; };
+		DD59340A29268E0C00C79D57 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = DD59340929268E0C00C79D57 /* SwiftKeychainWrapper */; };
+		DD59340D29268E4100C79D57 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59340C29268E4100C79D57 /* APIService.swift */; };
+		DD59340F29268E7200C79D57 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59340E29268E7200C79D57 /* UIApplication+Extension.swift */; };
+		DD59341129268E9200C79D57 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341029268E9200C79D57 /* KeychainStorage.swift */; };
+		DD59341629268ED400C79D57 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341529268ED400C79D57 /* Credentials.swift */; };
+		DD59341929268F4F00C79D57 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341829268F4F00C79D57 /* LoginView.swift */; };
+		DD59341B29268F5A00C79D57 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341A29268F5A00C79D57 /* LoginViewModel.swift */; };
+		DD59341D29268FFB00C79D57 /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341C29268FFB00C79D57 /* Authentication.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +57,13 @@
 		DD593400292648DB00C79D57 /* AccentColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorPicker.swift; sourceTree = "<group>"; };
 		DD5934022926574900C79D57 /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		DD59340529265E5A00C79D57 /* NotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesView.swift; sourceTree = "<group>"; };
+		DD59340C29268E4100C79D57 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		DD59340E29268E7200C79D57 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
+		DD59341029268E9200C79D57 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
+		DD59341529268ED400C79D57 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
+		DD59341829268F4F00C79D57 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		DD59341A29268F5A00C79D57 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		DD59341C29268FFB00C79D57 /* Authentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authentication.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD59340A29268E0C00C79D57 /* SwiftKeychainWrapper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +98,9 @@
 			isa = PBXGroup;
 			children = (
 				DD5933D229263D8B00C79D57 /* SecureAppApp.swift */,
+				DD59340B29268E3200C79D57 /* Services */,
 				DD5933E029263DE500C79D57 /* Views */,
+				DD59341429268EC800C79D57 /* Models */,
 				DD5933E529263FFC00C79D57 /* Extensions */,
 				DD5933D629263D8E00C79D57 /* Assets.xcassets */,
 				DD5933D829263D8E00C79D57 /* Preview Content */,
@@ -102,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				DD5933F22926449C00C79D57 /* Navigation */,
+				DD59341729268F3800C79D57 /* Login */,
 				DD5933ED292642D200C79D57 /* Onboarding */,
 				DD59340429265E4300C79D57 /* Notes */,
 				DD5933E82926404100C79D57 /* Settings */,
@@ -152,9 +171,9 @@
 			isa = PBXGroup;
 			children = (
 				DD5933F8292646C100C79D57 /* UnlockMethodToggle.swift */,
+				DD5933FE2926472600C79D57 /* LockTimerPicker.swift */,
 				DD5933FA292646DB00C79D57 /* PrivacyModeToggle.swift */,
 				DD5933FC292646F100C79D57 /* EphemeralClipboardToggle.swift */,
-				DD5933FE2926472600C79D57 /* LockTimerPicker.swift */,
 				DD593400292648DB00C79D57 /* AccentColorPicker.swift */,
 			);
 			path = Components;
@@ -166,6 +185,34 @@
 				DD59340529265E5A00C79D57 /* NotesView.swift */,
 			);
 			path = Notes;
+			sourceTree = "<group>";
+		};
+		DD59340B29268E3200C79D57 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				DD59340C29268E4100C79D57 /* APIService.swift */,
+				DD59340E29268E7200C79D57 /* UIApplication+Extension.swift */,
+				DD59341029268E9200C79D57 /* KeychainStorage.swift */,
+				DD59341C29268FFB00C79D57 /* Authentication.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		DD59341429268EC800C79D57 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				DD59341529268ED400C79D57 /* Credentials.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		DD59341729268F3800C79D57 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				DD59341829268F4F00C79D57 /* LoginView.swift */,
+				DD59341A29268F5A00C79D57 /* LoginViewModel.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,6 +231,9 @@
 			dependencies = (
 			);
 			name = SecureApp;
+			packageProductDependencies = (
+				DD59340929268E0C00C79D57 /* SwiftKeychainWrapper */,
+			);
 			productName = SecureApp;
 			productReference = DD5933CF29263D8B00C79D57 /* SecureApp.app */;
 			productType = "com.apple.product-type.application";
@@ -212,6 +262,9 @@
 				Base,
 			);
 			mainGroup = DD5933C629263D8B00C79D57;
+			packageReferences = (
+				DD59340829268E0C00C79D57 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
+			);
 			productRefGroup = DD5933D029263D8B00C79D57 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -238,23 +291,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD59341B29268F5A00C79D57 /* LoginViewModel.swift in Sources */,
 				DD5933F6292645A100C79D57 /* AppTabView.swift in Sources */,
 				DD5933EC2926419200C79D57 /* SettingsView.swift in Sources */,
 				DD593401292648DB00C79D57 /* AccentColorPicker.swift in Sources */,
+				DD59341629268ED400C79D57 /* Credentials.swift in Sources */,
 				DD5933F9292646C100C79D57 /* UnlockMethodToggle.swift in Sources */,
 				DD5933D329263D8B00C79D57 /* SecureAppApp.swift in Sources */,
 				DD5933E72926401D00C79D57 /* View+Extension.swift in Sources */,
 				DD5933E429263EF000C79D57 /* AuthenticationView.swift in Sources */,
+				DD59341929268F4F00C79D57 /* LoginView.swift in Sources */,
 				DD5933F12926432900C79D57 /* OnboardingCell.swift in Sources */,
 				DD5933FB292646DB00C79D57 /* PrivacyModeToggle.swift in Sources */,
 				DD5934032926574900C79D57 /* PopupView.swift in Sources */,
 				DD5933EF292642EE00C79D57 /* OnboardingView.swift in Sources */,
 				DD59340629265E5A00C79D57 /* NotesView.swift in Sources */,
 				DD5933FD292646F100C79D57 /* EphemeralClipboardToggle.swift in Sources */,
+				DD59340F29268E7200C79D57 /* UIApplication+Extension.swift in Sources */,
 				DD5933E229263E0800C79D57 /* PrivacyView.swift in Sources */,
 				DD5933F4292644FA00C79D57 /* AppStateSwitcher.swift in Sources */,
 				DD5933FF2926472600C79D57 /* LockTimerPicker.swift in Sources */,
+				DD59341129268E9200C79D57 /* KeychainStorage.swift in Sources */,
+				DD59340D29268E4100C79D57 /* APIService.swift in Sources */,
 				DD5933EA2926405A00C79D57 /* SettingsViewModel.swift in Sources */,
+				DD59341D29268FFB00C79D57 /* Authentication.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +521,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DD59340829268E0C00C79D57 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jrendel/SwiftKeychainWrapper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DD59340929268E0C00C79D57 /* SwiftKeychainWrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD59340829268E0C00C79D57 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;
+			productName = SwiftKeychainWrapper;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DD5933C729263D8B00C79D57 /* Project object */;
 }

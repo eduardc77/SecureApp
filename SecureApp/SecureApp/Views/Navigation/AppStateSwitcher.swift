@@ -8,19 +8,25 @@
 import SwiftUI
 
 struct AppStateSwitcher: View {
+   @EnvironmentObject var authentication: Authentication
    @ObservedObject var settingsViewModel: SettingsViewModel
    @State var isOnboardingPresented: Bool = false
    
    var body: some View {
       Group {
-         if settingsViewModel.isUnlocked {
-            if settingsViewModel.backgroundPrivacy {
-               PrivacyView(accentColor: settingsViewModel.colors[settingsViewModel.accentColorIndex])
-            } else {
-               AppTabView(settingsViewModel: settingsViewModel)
-            }
+         if !authentication.isValidated {
+            LoginView()
+            
          } else {
-            AuthenticationView(viewModel: settingsViewModel, biometricType: settingsViewModel.biometricType(), settingsViewModel: settingsViewModel)
+            if settingsViewModel.isUnlocked {
+               if settingsViewModel.backgroundPrivacy {
+                  PrivacyView(accentColor: settingsViewModel.colors[settingsViewModel.accentColorIndex])
+               } else {
+                  AppTabView(settingsViewModel: settingsViewModel)
+               }
+            } else {
+               AuthenticationView(viewModel: settingsViewModel, biometricType: settingsViewModel.biometricType(), settingsViewModel: settingsViewModel)
+            }
          }
       }
       

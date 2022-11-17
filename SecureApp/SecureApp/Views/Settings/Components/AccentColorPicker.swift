@@ -15,7 +15,7 @@ struct AccentColorPicker: View {
       Picker(selection: $settingsViewModel.accentColorIndex,
              label: Label(
                title: { Text("App Accent Color") },
-               icon: { Image(systemName: "paintpalette.fill") }),
+               icon: { Image(systemName: "paintpalette").font(.title3) }),
              
              content: {
          Text("Purple").tag(0)

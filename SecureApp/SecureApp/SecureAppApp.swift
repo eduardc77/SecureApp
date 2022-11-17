@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct SecureAppApp: App {
+   @StateObject var authentication = Authentication()
    @StateObject var settingsViewModel = SettingsViewModel()
    @Environment(\.scenePhase) var scenePhase
    
@@ -16,6 +17,7 @@ struct SecureAppApp: App {
       WindowGroup {
          AppStateSwitcher(settingsViewModel: settingsViewModel)
             .accentColor(settingsViewModel.colors[settingsViewModel.accentColorIndex])
+            .environmentObject(authentication)
       }
       
       .onChange(of: scenePhase) { newPhase in

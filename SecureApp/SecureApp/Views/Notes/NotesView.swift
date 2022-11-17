@@ -27,7 +27,8 @@ struct NotesView: View {
             Button {
                settingsViewModel.copyToClipboard(notes: notesText)
             } label: {
-               Text("Copy")
+               Image(systemName: "doc.on.doc")
+                  .font(.body)
             }
          }
          
@@ -35,7 +36,7 @@ struct NotesView: View {
             VStack(alignment: .center) {
                Spacer()
                   .frame(height: UIScreen.main.bounds.height / 22)
-               Label(settingsViewModel.ephemeralClipboard ? "Copied to clipboard (60sec)" : "Copied to clipboard", systemImage: settingsViewModel.ephemeralClipboard ? "timer" : "checkmark.circle.fill")
+               Label(settingsViewModel.ephemeralClipboard ? "Copied to clipboard (60sec)" : "Copied to clipboard", systemImage: settingsViewModel.ephemeralClipboard ? "timer" : "checkmark.circle")
                   .padding(14)
                   .foregroundColor(Color.white)
                   .background(settingsViewModel.colors[settingsViewModel.accentColorIndex])

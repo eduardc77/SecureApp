@@ -42,6 +42,6 @@ struct OnboardingCell: View {
 
 struct OnboardingCell_Previews: PreviewProvider {
    static var previews: some View {
-      OnboardingCell(image: "lock.fill", text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", title: "Sécurisé")
+      OnboardingCell(image: "key.viewfinder", text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", title: "Sécurisé")
    }
 }

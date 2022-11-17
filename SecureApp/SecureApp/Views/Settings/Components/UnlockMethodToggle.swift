@@ -15,10 +15,33 @@ struct UnlockMethodToggle: View {
    var body: some View {
       Toggle(isOn: $settingsViewModel.faceIdToggle,
              label: {
-         Label(title: { biometricType == .face ? Text("Unlock with Face ID") : biometricType == .touch ? Text("Unlock with Touch ID") : Text("Unlock with device passcode") },
-               icon: { biometricType == .face ?
-            Image(systemName: "faceid")                    : biometricType == .touch ? Image(systemName: "touchid") : Image(systemName: "key.fill") }
-         )
+         
+         Label(title: {
+            switch biometricType {
+               case .none:
+                  Text("Unlock with device passcode")
+               case .touch:
+                  Text("Unlock with Touch ID")
+               case .face:
+                  Text("Unlock with Face ID")
+               case .unknown:
+                  Text("Unlock with device passcode")
+            }
+         }, icon: {
+            Group {
+               switch biometricType {
+                  case .none:
+                     Image(systemName: "key.viewfinder")
+                  case .touch:
+                     Image(systemName: "touchid")
+                  case .face:
+                     Image(systemName: "faceid")
+                  case .unknown:
+                     Image(systemName: "key.viewfinder")
+               }
+            }
+            .font(.title2)
+         })
       })
       .toggleStyle(SwitchToggleStyle(tint: settingsViewModel.colors[settingsViewModel.accentColorIndex]))
       

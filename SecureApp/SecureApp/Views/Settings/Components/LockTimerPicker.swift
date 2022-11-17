@@ -15,10 +15,10 @@ struct LockTimerPicker: View {
       Picker(selection: $settingsViewModel.autoLock,
              label: Label(
                title: { Text("Lock automatically") },
-               icon: { Image(systemName: "lock.fill") }),
+               icon: { Image(systemName: "lock").font(.title2) }),
              
              content: {
-         Text("Instantly").tag(0)
+         Text("Immediately").tag(0)
          Text("1 minute").tag(1)
          Text("5 minutes").tag(2)
          Text("15 minutes").tag(3)
