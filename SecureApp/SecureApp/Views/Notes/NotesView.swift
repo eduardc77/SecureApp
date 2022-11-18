@@ -9,18 +9,23 @@ import SwiftUI
 
 struct NotesView: View {
    @ObservedObject var settingsViewModel: SettingsViewModel
-   @State var notesText: String = ""
+   @State private var notesText: String = ""
    
    var body: some View {
       NavigationView {
          VStack {
             TextEditor(text: $notesText)
-               .border(.gray)
+               .border(Color.accentColor.opacity(0.6))
                .cornerRadius(3)
                .padding()
             
             Spacer()
          }
+         .toast(isPresenting: $settingsViewModel.copyToClipboard) {
+            AlertToast(displayMode: .notification, type: settingsViewModel.ephemeralClipboard ? .systemImage("timer", .white) : .complete(.white), title: "Copied to clipboard", subTitle: settingsViewModel.ephemeralClipboard ? ("(60sec)") : nil, style: .style(backgroundColor: Color.accentColor, titleColor: .white, subTitleColor: .white, titleFont: .callout))
+            
+         }
+         
          .navigationTitle("Notes")
          
          .toolbar {
@@ -31,29 +36,11 @@ struct NotesView: View {
                   .font(.body)
             }
          }
-         
-         .popup(isPresented: $settingsViewModel.copyToClipboard, type: .toast, position: .top, autohideIn: 2) {
-            VStack(alignment: .center) {
-               Spacer()
-                  .frame(height: UIScreen.main.bounds.height / 22)
-               Label(settingsViewModel.ephemeralClipboard ? "Copied to clipboard (60sec)" : "Copied to clipboard", systemImage: settingsViewModel.ephemeralClipboard ? "timer" : "checkmark.circle")
-                  .padding(14)
-                  .foregroundColor(Color.white)
-                  .background(Color.accentColor)
-                  .cornerRadius(30)
-            }
-         }
       }
       .onTapGesture {
-         dismissKeyboard()
+         self.dismissKeyboard()
       }
    }
-   
-   private func dismissKeyboard() {
-      UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-   }
-   
-   
 }
 
 struct NotesView_Previews: PreviewProvider {

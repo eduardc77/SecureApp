@@ -17,21 +17,15 @@ enum BiometricType {
 }
 
 final class KeychainService: ObservableObject {
-   static let credentialsKey = "credentials"
    @Published var appLocked = false
    @Published var lockAppTimerIsRunning = false
+   @Published var onBoardingSheetIsPresented = false
    
-   @Published var unlockMethodIsActive: Bool {
-      didSet {
-         UserDefaults.standard.set(unlockMethodIsActive, forKey: "biometricAuthentication")
-      }
-   }
+   @AppStorage("biometricUnlockIsActive") var biometricUnlockIsActive: Bool = true
+   @AppStorage("autoLockIndex") var autoLockIndex: Int = 0
+   @AppStorage("isFirstLaunch") var isFirstLaunch: Bool = true
    
-   @Published var autoLock: Int {
-      didSet {
-         UserDefaults.standard.set(autoLock, forKey: "autoLock")
-      }
-   }
+   static let credentialsStorageKey = "credentials"
    
    static var biometricType: BiometricType {
       let authContext = LAContext()
@@ -47,11 +41,6 @@ final class KeychainService: ObservableObject {
          @unknown default:
             return .none
       }
-   }
-   
-   init() {
-      unlockMethodIsActive = UserDefaults.standard.object(forKey: "biometricAuthentication") as? Bool ?? false
-      autoLock = UserDefaults.standard.object(forKey: "autoLock") as? Int ?? 0
    }
    
    func requestBiometricUnlock(completion: @escaping (Result<Credentials, AuthenticationError>) -> Void) {
@@ -94,7 +83,7 @@ final class KeychainService: ObservableObject {
    
    func lockAppInBackground() {
       lockAppTimerIsRunning = true
-      let seconds: Int = 1 + autoLock * 60
+      let seconds: Int = 1 + autoLockIndex * 60
       let dispatchAfter = DispatchTimeInterval.seconds(seconds)
       
       DispatchQueue.main.asyncAfter(deadline: .now() + dispatchAfter) {
@@ -105,7 +94,7 @@ final class KeychainService: ObservableObject {
    }
    
    static func getCredentials() -> Credentials? {
-      if let myCredentialsString = KeychainWrapper.standard.string(forKey: Self.credentialsKey) {
+      if let myCredentialsString = KeychainWrapper.standard.string(forKey: Self.credentialsStorageKey) {
          return Credentials.decode(myCredentialsString)
       } else {
          return nil
@@ -113,7 +102,7 @@ final class KeychainService: ObservableObject {
    }
    
    static func saveCredentials(_ credentials: Credentials) -> Bool {
-      if KeychainWrapper.standard.set(credentials.encoded(), forKey: Self.credentialsKey) {
+      if KeychainWrapper.standard.set(credentials.encoded(), forKey: Self.credentialsStorageKey) {
          return true
       } else {
          return false

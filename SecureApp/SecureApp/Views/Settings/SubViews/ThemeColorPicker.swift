@@ -1,5 +1,5 @@
 //
-//  AccentColorPicker.swift
+//  ThemeColorPicker.swift
 //  SecureApp
 //
 //  Created by Eduard Caziuc on 17.11.2022.
@@ -7,14 +7,13 @@
 
 import SwiftUI
 
-struct AccentColorPicker: View {
-   
+struct ThemeColorPicker: View {
    @ObservedObject var settingsViewModel: SettingsViewModel
    
    var body: some View {
       Picker(selection: $settingsViewModel.accentColorIndex,
              label: Label(
-               title: { Text("App Accent Color") },
+               title: { Text("Theme Color") },
                icon: { Image(systemName: "paintpalette").font(.title3) }),
              
              content: {
@@ -30,6 +29,6 @@ struct AccentColorPicker: View {
 
 struct AccentColorPicker_Previews: PreviewProvider {
    static var previews: some View {
-      AccentColorPicker(settingsViewModel: SettingsViewModel())
+      ThemeColorPicker(settingsViewModel: SettingsViewModel())
    }
 }

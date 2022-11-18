@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct UnlockMethodToggle: View {
-   @EnvironmentObject var keychainService: KeychainService
+   @EnvironmentObject private var keychainService: KeychainService
  
    var body: some View {
-      Toggle(isOn: $keychainService.unlockMethodIsActive,
+      Toggle(isOn: $keychainService.biometricUnlockIsActive,
              label: {
          
          Label(title: {
@@ -43,19 +43,19 @@ struct UnlockMethodToggle: View {
       })
       .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
       
-      .onChange(of: keychainService.unlockMethodIsActive, perform: { unlockMethodIsActive in
+      .onChange(of: keychainService.biometricUnlockIsActive, perform: { unlockMethodIsActive in
          
          if unlockMethodIsActive {
             keychainService.requestBiometricUnlock { (result: Result<Credentials, AuthenticationError>) in
                switch result {
                   case .success:
-                     keychainService.unlockMethodIsActive = true
+                     keychainService.biometricUnlockIsActive = true
                   case .failure:
-                     keychainService.unlockMethodIsActive = false
+                     keychainService.biometricUnlockIsActive = false
                }
             }
          } else {
-            keychainService.unlockMethodIsActive = false
+            keychainService.biometricUnlockIsActive = false
          }
       })
    }

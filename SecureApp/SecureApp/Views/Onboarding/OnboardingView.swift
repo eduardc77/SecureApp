@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct OnboardingView: View {
-   @ObservedObject var settingsViewModel: SettingsViewModel
+   @EnvironmentObject private var keychainService: KeychainService
    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
-   @Environment(\.colorScheme) var colorScheme
+   @Environment(\.colorScheme) private var colorScheme
    
    var body: some View {
       
@@ -46,7 +46,7 @@ struct OnboardingView: View {
          
          Button(action: {
             presentationMode.wrappedValue.dismiss()
-            settingsViewModel.isFirstLaunch = false
+            keychainService.isFirstLaunch = false
          },
                 label: {
             HStack {
@@ -70,6 +70,7 @@ struct OnboardingView: View {
 
 struct OnboardingView_Previews: PreviewProvider {
    static var previews: some View {
-      OnboardingView(settingsViewModel: SettingsViewModel())
+      OnboardingView()
+         .environmentObject(KeychainService())
    }
 }

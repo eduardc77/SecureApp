@@ -8,387 +8,660 @@
 import SwiftUI
 import Combine
 
-extension View {
+fileprivate struct AnimatedCheckmark: View {
+   var color: Color = .black
+   var size: Int = 50
    
-   public func popup<PopupContent: View>(
-      isPresented: Binding<Bool>,
-      type: Popup<PopupContent>.PopupType = .`default`,
-      position: Popup<PopupContent>.Position = .bottom,
-      animation: Animation = Animation.easeOut(duration: 0.3),
-      autohideIn: Double? = nil,
-      dragToDismiss: Bool = true,
-      closeOnTap: Bool = true,
-      closeOnTapOutside: Bool = false,
-      backgroundColor: Color = Color.clear,
-      dismissCallback: @escaping () -> () = {},
-      view: @escaping () -> PopupContent) -> some View {
-         self.modifier(
-            Popup(
-               isPresented: isPresented,
-               type: type,
-               position: position,
-               animation: animation,
-               autohideIn: autohideIn,
-               dragToDismiss: dragToDismiss,
-               closeOnTap: closeOnTap,
-               closeOnTapOutside: closeOnTapOutside,
-               backgroundColor: backgroundColor,
-               dismissCallback: dismissCallback,
-               view: view)
-         )
-      }
-   
-   @ViewBuilder
-   func applyIf<T: View>(_ condition: Bool, apply: (Self) -> T) -> some View {
-      if condition {
-         apply(self)
-      } else {
-         self
-      }
+   var height: CGFloat {
+      return CGFloat(size)
    }
    
-   @ViewBuilder
-   fileprivate func addTap(onTap: @escaping ()->()) -> some View {
-      self.simultaneousGesture(
-         TapGesture().onEnded {
-            onTap()
-         }
-      )
+   var width: CGFloat {
+      return CGFloat(size)
+   }
+   
+   @State private var percentage: CGFloat = .zero
+   
+   var body: some View {
+      Path { path in
+         path.move(to: CGPoint(x: 0, y: height / 2))
+         path.addLine(to: CGPoint(x: width / 2.5, y: height))
+         path.addLine(to: CGPoint(x: width, y: 0))
+      }
+      .trim(from: 0, to: percentage)
+      .stroke(color, style: StrokeStyle(lineWidth: CGFloat(size / 8), lineCap: .round, lineJoin: .round))
+      .animation(Animation.spring().speed(0.75).delay(0.25), value: percentage)
+      .frame(width: width, height: height, alignment: .center)
+      
+      .onAppear {
+         percentage = 1.0
+      }
    }
 }
 
-public struct Popup<PopupContent>: ViewModifier where PopupContent: View {
+fileprivate struct AnimatedXMark: View {
+   var color: Color = .black
+   var size: Int = 50
    
-   init(isPresented: Binding<Bool>,
-        type: PopupType,
-        position: Position,
-        animation: Animation,
-        autohideIn: Double?,
-        dragToDismiss: Bool,
-        closeOnTap: Bool,
-        closeOnTapOutside: Bool,
-        backgroundColor: Color,
-        dismissCallback: @escaping () -> (),
-        view: @escaping () -> PopupContent) {
-      self._isPresented = isPresented
+   var height: CGFloat {
+      return CGFloat(size)
+   }
+   
+   var width: CGFloat {
+      return CGFloat(size)
+   }
+   
+   var rect: CGRect {
+      return CGRect(x: 0, y: 0, width: size, height: size)
+   }
+   
+   @State private var percentage: CGFloat = .zero
+   
+   var body: some View {
+      Path { path in
+         path.move(to: CGPoint(x: rect.minX, y: rect.minY))
+         path.addLine(to: CGPoint(x: rect.maxY, y: rect.maxY))
+         path.move(to: CGPoint(x: rect.maxX, y: rect.minY))
+         path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+      }
+      .trim(from: 0, to: percentage)
+      .stroke(color, style: StrokeStyle(lineWidth: CGFloat(size / 8), lineCap: .round, lineJoin: .round))
+      .animation(Animation.spring().speed(0.75).delay(0.25), value: percentage)
+      .frame(width: width, height: height, alignment: .center)
+      
+      .onAppear {
+         percentage = 1.0
+      }
+   }
+}
+
+//MARK: - Main View
+
+public struct AlertToast: View {
+   public enum BannerAnimation {
+      case slide, pop
+   }
+   
+   /// Determine how the alert will be display
+   public enum DisplayMode: Equatable {
+      
+      ///Present at the center of the screen
+      case alert
+      
+      ///Drop from the top of the screen
+      case notification
+      
+      ///Banner from the bottom of the view
+      case banner(_ transition: BannerAnimation)
+   }
+   
+   /// Determine what the alert will display
+   public enum AlertType: Equatable {
+      
+      ///Animated checkmark
+      case complete(_ color: Color)
+      
+      ///Animated xMark
+      case error(_ color: Color)
+      
+      ///System image from `SFSymbols`
+      case systemImage(_ name: String, _ color: Color)
+      
+      ///Image from Assets
+      case image(_ name: String, _ color: Color)
+      
+      ///Loading indicator (Circular)
+      case loading
+      
+      ///Only text alert
+      case regular
+   }
+   
+   /// Customize Alert Appearance
+   public enum AlertStyle: Equatable {
+      case style(backgroundColor: Color? = nil,
+                 titleColor: Color? = nil,
+                 subTitleColor: Color? = nil,
+                 titleFont: Font? = nil,
+                 subTitleFont: Font? = nil)
+      
+      var backgroundColor: Color? {
+         switch self{
+            case .style(backgroundColor: let color, _, _, _, _):
+               return color
+         }
+      }
+      
+      var titleColor: Color? {
+         switch self{
+            case .style(_,let color, _,_,_):
+               return color
+         }
+      }
+      
+      var subtitleColor: Color? {
+         switch self{
+            case .style(_,_, let color, _,_):
+               return color
+         }
+      }
+      
+      var titleFont: Font? {
+         switch self {
+            case .style(_, _, _, titleFont: let font, _):
+               return font
+         }
+      }
+      
+      var subTitleFont: Font? {
+         switch self {
+            case .style(_, _, _, _, subTitleFont: let font):
+               return font
+         }
+      }
+   }
+   
+   ///The display mode
+   /// - `alert`
+   /// - `hud`
+   /// - `banner`
+   public var displayMode: DisplayMode = .alert
+   
+   ///What the alert would show
+   ///`complete`, `error`, `systemImage`, `image`, `loading`, `regular`
+   public var type: AlertType
+   
+   ///The title of the alert (`Optional(String)`)
+   public var title: String? = nil
+   
+   ///The subtitle of the alert (`Optional(String)`)
+   public var subTitle: String? = nil
+   
+   ///Customize your alert appearance
+   public var style: AlertStyle? = nil
+   
+   ///Full init
+   public init(displayMode: DisplayMode = .alert,
+               type: AlertType,
+               title: String? = nil,
+               subTitle: String? = nil,
+               style: AlertStyle? = nil){
+      
+      self.displayMode = displayMode
       self.type = type
-      self.position = position
-      self.animation = animation
-      self.autohideIn = autohideIn
-      self.dragToDismiss = dragToDismiss
-      self.closeOnTap = closeOnTap
-      self.closeOnTapOutside = closeOnTapOutside
-      self.backgroundColor = backgroundColor
-      self.dismissCallback = dismissCallback
-      self.view = view
-      self.isPresentedRef = ClassReference(self.$isPresented)
+      self.title = title
+      self.subTitle = subTitle
+      self.style = style
    }
    
-   public enum PopupType {
+   ///Short init with most used parameters
+   public init(displayMode: DisplayMode,
+               type: AlertType,
+               title: String? = nil) {
       
-      case `default`
-      case toast
-      case floater(verticalPadding: CGFloat = 50)
-      
-      func shouldBeCentered() -> Bool {
-         switch self {
-            case .`default`:
-               return true
-            default:
-               return false
-         }
-      }
+      self.displayMode = displayMode
+      self.type = type
+      self.title = title
    }
    
-   public enum Position {
-      case top
-      case bottom
-   }
-   
-   private enum DragState {
-      case inactive
-      case dragging(translation: CGSize)
-      
-      var translation: CGSize {
-         switch self {
-            case .inactive:
-               return .zero
-            case .dragging(let translation):
-               return translation
-         }
-      }
-      
-      var isDragging: Bool {
-         switch self {
-            case .inactive:
-               return false
-            case .dragging:
-               return true
-         }
-      }
-   }
-   
-   // MARK: - Public Properties
-   
-   /// Tells if the sheet should be presented or not
-   @Binding var isPresented: Bool
-   
-   var type: PopupType
-   var position: Position
-   
-   var animation: Animation
-   
-   /// If nil - never hides on its own
-   var autohideIn: Double?
-   
-   /// Should close on tap - default is `true`
-   var closeOnTap: Bool
-   
-   /// Should allow dismiss by dragging
-   var dragToDismiss: Bool
-   
-   /// Should close on tap outside - default is `true`
-   var closeOnTapOutside: Bool
-   
-   /// Background color for outside area - default is `Color.clear`
-   var backgroundColor: Color
-   
-   /// is called on any close action
-   var dismissCallback: () -> ()
-   
-   var view: () -> PopupContent
-   
-   /// holder for autohiding dispatch work (to be able to cancel it when needed)
-   var dispatchWorkHolder = DispatchWorkHolder()
-   
-   // MARK: - Private Properties
-   
-   /// Class reference for capturing a weak reference later in dispatch work holder.
-   private var isPresentedRef: ClassReference<Binding<Bool>>?
-   
-   /// The rect of the hosting controller
-   @State private var presenterContentRect: CGRect = .zero
-   
-   /// The rect of popup content
-   @State private var sheetContentRect: CGRect = .zero
-   
-   /// Drag to dismiss gesture state
-   @GestureState private var dragState = DragState.inactive
-   
-   /// Last position for drag gesture
-   @State private var lastDragPosition: CGFloat = 0
-   
-   /// Show content for lazy loading
-   @State private var showContent: Bool = false
-   
-   /// Should present the animated part of popup (sliding background)
-   @State private var animatedContentIsPresented: Bool = false
-   
-   /// The offset when the popup is displayed
-   private var displayedOffset: CGFloat {
-      switch type {
-         case .`default`:
-            return  -presenterContentRect.midY + screenHeight/2
-         case .toast:
-            if position == .bottom {
-               return screenHeight - presenterContentRect.midY - sheetContentRect.height/2
-            } else {
-               return -presenterContentRect.midY + sheetContentRect.height/2
-            }
-         case .floater(let verticalPadding):
-            if position == .bottom {
-               return screenHeight - presenterContentRect.midY - sheetContentRect.height/2 - verticalPadding
-            } else {
-               return -presenterContentRect.midY + sheetContentRect.height/2 + verticalPadding
-            }
-      }
-   }
-   
-   /// The offset when the popup is hidden
-   private var hiddenOffset: CGFloat {
-      if position == .top {
-         if presenterContentRect.isEmpty {
-            return -1000
-         }
-         return -presenterContentRect.midY - sheetContentRect.height/2 - 5
-      } else {
-         if presenterContentRect.isEmpty {
-            return 1000
-         }
-         return screenHeight - presenterContentRect.midY + sheetContentRect.height/2 + 5
-      }
-   }
-   
-   /// The current offset, based on the **presented** property
-   private var currentOffset: CGFloat {
-      return animatedContentIsPresented ? displayedOffset : hiddenOffset
-   }
-   
-   /// The current background opacity, based on the **presented** property
-   private var currentBackgroundOpacity: Double {
-      return animatedContentIsPresented ? 1.0 : 0.0
-   }
-   
-   private var screenSize: CGSize {
-      return UIScreen.main.bounds.size
-   }
-   
-   private var screenHeight: CGFloat {
-      screenSize.height
-   }
-   
-   // MARK: - Content Builders
-   
-   public func body(content: Content) -> some View {
-      Group {
-         if showContent {
-            main(content: content)
-         } else {
-            content
-         }
-      }
-      .onChange(of: isPresented) { isPresented in
-         appearAction(isPresented: isPresented)
-      }
-   }
-   
-   private func main(content: Content) -> some View {
-      ZStack {
-         content
-            .background(
-               GeometryReader { proxy -> AnyView in
-                  let rect = proxy.frame(in: .global)
-                  // This avoids an infinite layout loop
-                  if rect.integral != self.presenterContentRect.integral {
-                     DispatchQueue.main.async {
-                        self.presenterContentRect = rect
-                     }
-                  }
-                  return AnyView(EmptyView())
+   ///Banner from the bottom of the view
+   public var banner: some View {
+      VStack {
+         Spacer()
+         
+         VStack(alignment: .leading, spacing: 10) {
+            HStack{
+               switch type {
+                  case .complete(let color):
+                     Image(systemName: "checkmark")
+                        .foregroundColor(color)
+                  case .error(let color):
+                     Image(systemName: "xmark")
+                        .foregroundColor(color)
+                  case .systemImage(let name, let color):
+                     Image(systemName: name)
+                        .foregroundColor(color)
+                  case .image(let name, let color):
+                     Image(name)
+                        .foregroundColor(color)
+                  case .loading:
+                     LoadingView()
+                        .withFrame(true)
+                  case .regular:
+                     EmptyView()
                }
-            )
-         
-         backgroundColor
-            .applyIf(closeOnTapOutside) { view in
-               view.contentShape(Rectangle())
+               
+               Text(LocalizedStringKey(title ?? ""))
+                  .font(style?.titleFont ?? Font.headline.bold())
             }
-            .addTap {
-               withAnimation {
-                  dismiss()
-               }
-            }
-            .ignoresSafeArea()
-            .opacity(currentBackgroundOpacity)
-            .animation(animation)
-      }
-      .overlay(sheet())
-   }
-   
-   /// This is the builder for the sheet content
-   func sheet() -> some View {
-      
-      // if needed, dispatch autohide and cancel previous one
-      if let autohideIn = autohideIn {
-         dispatchWorkHolder.work?.cancel()
-         
-         // Weak reference to avoid the work item capturing the struct,
-         // which would create a retain cycle with the work holder itself.
-         
-         let block = dismissCallback
-         dispatchWorkHolder.work = DispatchWorkItem(block: { [weak isPresentedRef] in
-            isPresentedRef?.value.wrappedValue = false
             
-            block()
-         })
-         if isPresented, let work = dispatchWorkHolder.work {
-            DispatchQueue.main.asyncAfter(deadline: .now() + autohideIn, execute: work)
+            if subTitle != nil {
+               Text(LocalizedStringKey(subTitle!))
+                  .font(style?.subTitleFont ?? Font.subheadline)
+            }
+         }
+         .fixedSize(horizontal: true, vertical: false)
+         .multilineTextAlignment(.leading)
+         .textColor(style?.titleColor ?? nil)
+         .padding()
+         .frame(maxWidth: .infinity, alignment: .leading)
+         .alertBackground(style?.backgroundColor ?? nil)
+         .cornerRadius(10)
+         .padding([.horizontal, .bottom])
+      }
+   }
+   
+   ///Notification from the top of the View
+   public var notification: some View {
+      Group{
+         HStack(spacing: 10) {
+            switch type {
+               case .complete(let color):
+                  Image(systemName: "checkmark.circle.fill")
+                     .notificationModifier()
+                     .foregroundColor(color)
+               case .error(let color):
+                  Image(systemName: "xmark")
+                     .notificationModifier()
+                     .foregroundColor(color)
+               case .systemImage(let name, let color):
+                  Image(systemName: name)
+                     .notificationModifier()
+                     .foregroundColor(color)
+               case .image(let name, let color):
+                  Image(name)
+                     .notificationModifier()
+                     .foregroundColor(color)
+               case .loading:
+                  LoadingView()
+               case .regular:
+                  EmptyView()
+            }
+            
+            if title != nil || subTitle != nil {
+               VStack(alignment: type == .regular ? .center : .leading, spacing: 2) {
+                  if title != nil{
+                     Text(LocalizedStringKey(title ?? ""))
+                        .font(style?.titleFont ?? Font.body.bold())
+                        .multilineTextAlignment(.center)
+                        .textColor(style?.titleColor ?? nil)
+                  }
+                  if subTitle != nil {
+                     Text(LocalizedStringKey(subTitle ?? ""))
+                        .font(style?.subTitleFont ?? Font.footnote)
+                        .opacity(0.8)
+                        .multilineTextAlignment(.center)
+                        .textColor(style?.subtitleColor ?? nil)
+                  }
+               }
+            }
+         }
+         .fixedSize(horizontal: true, vertical: false)
+         .padding(.horizontal, 24)
+         .padding(.vertical, 8)
+         .frame(minHeight: 50)
+         .alertBackground(style?.backgroundColor ?? nil)
+         .clipShape(Capsule())
+         .overlay(Capsule().stroke(Color.gray.opacity(0.2), lineWidth: 1))
+         .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 6)
+         .compositingGroup()
+      }
+      .padding(.top)
+   }
+   
+   ///Alert View
+   public var alert: some View {
+      VStack{
+         switch type {
+            case .complete(let color):
+               Spacer()
+               AnimatedCheckmark(color: color)
+               Spacer()
+               
+            case .error(let color):
+               Spacer()
+               AnimatedXMark(color: color)
+               Spacer()
+               
+            case .systemImage(let name, let color):
+               Spacer()
+               Image(systemName: name)
+                  .renderingMode(.template)
+                  .resizable()
+                  .aspectRatio(contentMode: .fit)
+                  .scaledToFit()
+                  .foregroundColor(color)
+                  .padding(.bottom)
+               Spacer()
+               
+            case .image(let name, let color):
+               Spacer()
+               Image(name)
+                  .resizable()
+                  .aspectRatio(contentMode: .fit)
+                  .scaledToFit()
+                  .foregroundColor(color)
+                  .padding(.bottom)
+               Spacer()
+               
+            case .loading:
+               LoadingView()
+               
+            case .regular:
+               EmptyView()
+         }
+         
+         VStack(spacing: type == .regular ? 8 : 2) {
+            if title != nil{
+               Text(LocalizedStringKey(title ?? ""))
+                  .font(style?.titleFont ?? Font.body.bold())
+                  .multilineTextAlignment(.center)
+                  .textColor(style?.titleColor ?? nil)
+            }
+            if subTitle != nil{
+               Text(LocalizedStringKey(subTitle ?? ""))
+                  .font(style?.subTitleFont ?? Font.footnote)
+                  .opacity(0.7)
+                  .multilineTextAlignment(.center)
+                  .textColor(style?.subtitleColor ?? nil)
+            }
          }
       }
-      
-      let sheet = ZStack {
-         if isPresentedRef?.value.wrappedValue == true {
-            self.view()
-               .addTap {
-                  dismiss()
-                  
-               }
-               .background(
-                  GeometryReader { proxy -> AnyView in
-                     let rect = proxy.frame(in: .global)
-                     // This avoids an infinite layout loop
-                     if rect.integral != self.sheetContentRect.integral {
-                        DispatchQueue.main.async {
-                           self.sheetContentRect = rect
+      .padding()
+      .withFrame(type != .regular && type != .loading)
+      .alertBackground(style?.backgroundColor ?? nil)
+      .cornerRadius(10)
+   }
+   
+   public var body: some View {
+      switch displayMode {
+         case .alert:
+            alert
+         case .notification:
+            notification
+         case .banner:
+            banner
+      }
+   }
+}
+
+public struct AlertToastModifier: ViewModifier {
+   @Binding var isPresenting: Bool
+   @State var duration: Double = 2
+   @State var tapToDismiss: Bool = true
+   var offsetY: CGFloat = 0
+   var alert: () -> AlertToast
+   var onTap: (() -> ())? = nil
+   var completion: (() -> ())? = nil
+   
+   @State private var workItem: DispatchWorkItem?
+   @State private var hostRect: CGRect = .zero
+   @State private var alertRect: CGRect = .zero
+   
+   private var screen: CGRect {
+      return UIScreen.main.bounds
+   }
+   
+   private var offset: CGFloat {
+      return -hostRect.midY + alertRect.height
+   }
+   
+   @ViewBuilder
+   public func main() -> some View {
+      if isPresenting {
+         
+         switch alert().displayMode {
+            case .alert:
+               alert()
+                  .onTapGesture {
+                     onTap?()
+                     if tapToDismiss {
+                        withAnimation(Animation.spring()) {
+                           self.workItem?.cancel()
+                           isPresenting = false
+                           self.workItem = nil
                         }
                      }
+                  }
+                  .onDisappear(perform: {
+                     completion?()
+                  })
+               
+                  .transition(AnyTransition.scale(scale: 0.8).combined(with: .opacity))
+               
+            case .notification:
+               alert()
+                  .overlay (
+                     GeometryReader { geo -> AnyView in
+                        let rect = geo.frame(in: .global)
+                        
+                        if rect.integral != alertRect.integral {
+                           DispatchQueue.main.async {
+                              self.alertRect = rect
+                           }
+                        }
+                        return AnyView(EmptyView())
+                     }
+                  )
+                  .onTapGesture {
+                     onTap?()
+                     if tapToDismiss{
+                        withAnimation(Animation.spring()) {
+                           self.workItem?.cancel()
+                           isPresenting = false
+                           self.workItem = nil
+                        }
+                     }
+                  }
+                  .onDisappear(perform: {
+                     completion?()
+                  })
+               
+                  .transition(AnyTransition.move(edge: .top).combined(with: .opacity))
+               
+            case .banner:
+               alert()
+                  .onTapGesture {
+                     onTap?()
+                     if tapToDismiss{
+                        withAnimation(.spring()) {
+                           self.workItem?.cancel()
+                           isPresenting = false
+                           self.workItem = nil
+                        }
+                     }
+                  }
+                  .onDisappear(perform: {
+                     completion?()
+                  })
+               
+                  .transition(alert().displayMode == .banner(.slide) ? AnyTransition.slide.combined(with: .opacity) : AnyTransition.move(edge: .bottom))
+         }
+      }
+   }
+   
+   @ViewBuilder
+   public func body(content: Content) -> some View {
+      
+      switch alert().displayMode {
+         case .banner:
+            content
+               .overlay(
+                  ZStack {
+                     main()
+                        .offset(y: offsetY)
+                  }
+                     .animation(.spring(), value: isPresenting)
+               )
+               .onChange(of: isPresenting) { presented in
+                  if presented {
+                     onAppearAction()
+                  }
+               }
+            
+         case .notification:
+            content
+               .overlay(
+                  GeometryReader{ geo -> AnyView in
+                     let rect = geo.frame(in: .global)
+                     
+                     if rect.integral != hostRect.integral {
+                        DispatchQueue.main.async {
+                           self.hostRect = rect
+                        }
+                     }
+                     
                      return AnyView(EmptyView())
                   }
+                     .overlay(
+                        ZStack {
+                           main()
+                              .offset(y: offsetY)
+                        }
+                           .frame(maxWidth: .infinity, maxHeight: .infinity)
+                           .offset(y: offset)
+                           .animation(.spring(), value: isPresenting))
                )
-               .frame(width: screenSize.width)
-               .offset(x: 0, y: currentOffset)
-               .animation(animation)
-         }
+            
+               .onChange(of: isPresenting) { presented in
+                  if presented {
+                     onAppearAction()
+                  }
+               }
+            
+         case .alert:
+            content
+               .overlay(
+                  ZStack {
+                     main()
+                        .offset(y: offsetY)
+                  }
+                     .frame(maxWidth: screen.width, maxHeight: screen.height)
+                     .edgesIgnoringSafeArea(.all)
+                     .animation(Animation.spring(), value: isPresenting))
+            
+               .onChange(of: isPresenting) { presented in
+                  if presented {
+                     onAppearAction()
+                  }
+               }
+      }
+   }
+   
+   private func onAppearAction() {
+      guard workItem == nil else {
+         return
       }
       
-      let drag = DragGesture()
-         .updating($dragState) { drag, state, _ in
-            state = .dragging(translation: drag.translation)
-         }
-         .onEnded(onDragEnded)
+      if alert().type == .loading {
+         duration = 0
+         tapToDismiss = false
+      }
       
-      return sheet
-         .applyIf(dragToDismiss) {
-            $0.offset(y: dragOffset())
-               .simultaneousGesture(drag)
+      if duration > 0 {
+         workItem?.cancel()
+         
+         let task = DispatchWorkItem {
+            withAnimation(.spring()) {
+               isPresenting = false
+               workItem = nil
+            }
          }
-   }
-   
-   func dragOffset() -> CGFloat {
-      if (position == .bottom && dragState.translation.height > 0) ||
-            (position == .top && dragState.translation.height < 0) {
-         return dragState.translation.height
-      }
-      return lastDragPosition
-   }
-   
-   private func onDragEnded(drag: DragGesture.Value) {
-      let reference = sheetContentRect.height / 3
-      if (position == .bottom && drag.translation.height > reference) ||
-            (position == .top && drag.translation.height < -reference) {
-         lastDragPosition = drag.translation.height
-         withAnimation {
-            lastDragPosition = 0
-         }
-         dismiss()
+         workItem = task
+         DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: task)
       }
    }
+}
+
+///View Modifier for dynamic frame when alert type is `.regular` / `.loading`
+fileprivate struct WithFrameModifier: ViewModifier {
    
-   private func appearAction(isPresented: Bool) {
-      if isPresented {
-         showContent = true
-         DispatchQueue.main.async {
-            animatedContentIsPresented = true
-         }
+   var withFrame: Bool
+   
+   var maxWidth: CGFloat = 175
+   var maxHeight: CGFloat = 175
+   
+   @ViewBuilder
+   func body(content: Content) -> some View {
+      if withFrame {
+         content
+            .frame(maxWidth: maxWidth, maxHeight: maxHeight, alignment: .center)
+      }else {
+         content
+      }
+   }
+}
+
+///View Modifier to change the alert background
+fileprivate struct BackgroundModifier: ViewModifier {
+   var color: Color?
+   
+   @ViewBuilder
+   func body(content: Content) -> some View {
+      if color != nil {
+         content
+            .background(color)
       } else {
-         animatedContentIsPresented = false
+         content
+            .background(BlurView())
       }
    }
+}
+
+///View Modifier to change the text colors
+fileprivate struct TextForegroundModifier: ViewModifier{
+   var color: Color?
    
-   private func dismiss() {
-      dispatchWorkHolder.work?.cancel()
-      isPresented = false
-      dismissCallback()
+   @ViewBuilder
+   func body(content: Content) -> some View {
+      if color != nil {
+         content
+            .foregroundColor(color)
+      }else {
+         content
+      }
    }
 }
 
-final class DispatchWorkHolder {
-   var work: DispatchWorkItem?
+fileprivate extension Image {
+   func notificationModifier() -> some View {
+      self
+         .renderingMode(.template)
+         .resizable()
+         .aspectRatio(contentMode: .fit)
+         .frame(maxWidth: 16, maxHeight: 16)
+   }
 }
 
-private final class ClassReference<T> {
-   var value: T
+public extension View {
+   /// Return some view w/o frame depends on the condition.
+   /// This view modifier function is set by default to:
+   /// - `maxWidth`: 175
+   /// - `maxHeight`: 175
+   fileprivate func withFrame(_ withFrame: Bool) -> some View {
+      modifier(WithFrameModifier(withFrame: withFrame))
+   }
    
-   init(_ value: T) {
-      self.value = value
+   /// Present `AlertToast`.
+   /// - Parameters:
+   ///   - isPresenting: Binding<Bool>
+   ///   - alert: () -> AlertToast
+   /// - Returns: `AlertToast`
+   func toast(isPresenting: Binding<Bool>, duration: Double = 2, tapToDismiss: Bool = true, offsetY: CGFloat = 0, alert: @escaping () -> AlertToast, onTap: (() -> ())? = nil, completion: (() -> ())? = nil) -> some View {
+      modifier(AlertToastModifier(isPresenting: isPresenting, duration: duration, tapToDismiss: tapToDismiss, offsetY: offsetY, alert: alert, onTap: onTap, completion: completion))
+   }
+   
+   /// Choose the alert background
+   /// - Parameter color: Some Color, if `nil` return `VisualEffectBlur`
+   /// - Returns: some View
+   fileprivate func alertBackground(_ color: Color? = nil) -> some View {
+      modifier(BackgroundModifier(color: color))
+   }
+   
+   /// Choose the alert background
+   /// - Parameter color: Some Color, if `nil` return `.black`/`.white` depends on system theme
+   /// - Returns: some View
+   fileprivate func textColor(_ color: Color? = nil) -> some View {
+      modifier(TextForegroundModifier(color: color))
    }
 }

@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct SettingsView: View {
-   @EnvironmentObject var keychainService: KeychainService
-   @EnvironmentObject var authentication: UserAppState
+   @EnvironmentObject private var keychainService: KeychainService
+   @EnvironmentObject private var authentication: UserAppState
    @ObservedObject var settingsViewModel: SettingsViewModel
+   @Environment(\.colorScheme) private var colorScheme
    
    var body: some View {
       NavigationView {
@@ -20,20 +21,22 @@ struct SettingsView: View {
                   
                   UnlockMethodToggle()
                   
-                  if keychainService.unlockMethodIsActive {
+                  if keychainService.biometricUnlockIsActive {
                      LockTimerPicker()
                   }
                   
                   PrivacyModeToggle(settingsViewModel: settingsViewModel)
                }
                
-               Section(header: Text(""), footer: Text("If this option is active, the clipboard contents will be automatically cleared after 60 seconds.")) {
+               Section(footer: Text("If this option is active, the clipboard contents will be automatically cleared after 60 seconds.")) {
                   
                   EphemeralClipboardToggle(settingsViewModel: settingsViewModel)
                }
-               
-               Section(header: Text("Customisations")) {
-                  AccentColorPicker(settingsViewModel: settingsViewModel)
+            
+               Section(header: Text("Preferences")) {
+                  ColorSchemeToggle(settingsViewModel: settingsViewModel)
+
+                  ThemeColorPicker(settingsViewModel: settingsViewModel)
                }
                
                Section {
@@ -59,6 +62,11 @@ struct SettingsView: View {
 
             .listStyle(.insetGrouped)
             .navigationBarTitle("Settings")
+         }
+      }
+      .onAppear {
+         if settingsViewModel.appAppearance == 3 {
+            settingsViewModel.appAppearance = colorScheme == .dark ? 1 : 0
          }
       }
    }

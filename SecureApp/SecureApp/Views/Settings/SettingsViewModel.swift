@@ -11,49 +11,17 @@ import LocalAuthentication
 import CoreHaptics
 
 final class SettingsViewModel: ObservableObject {
-   
-   init() {
-      accentColorIndex = UserDefaults.standard.object(forKey: "accentColorIndex") as? Int ?? 0
-      supportsHaptics = hapticCapability.supportsHaptics
-      isFirstLaunch = UserDefaults.standard.object(forKey: "isFirstLaunch") as? Bool ?? true
-      privacyMode = UserDefaults.standard.object(forKey: "privacyMode") as? Bool ?? true
-      ephemeralClipboard = UserDefaults.standard.object(forKey: "ephemeralClipboard") as? Bool ?? true
-   }
-   
-   var supportsHaptics: Bool = false
-   let hapticCapability = CHHapticEngine.capabilitiesForHardware()
-   var colors: [Color] = [.purple, .red, .blue, .green, .orange, .secondary]
-   
    @Published var copyToClipboard = false
-   @Published var onBoardingSheetIsPresented = false
    @Published var backgroundPrivacy = true
-   @AppStorage("isDarkMode") var appAppearance: String = "Auto"
-   @AppStorage("appAppearanceToggle") var appAppearanceToggle: Bool = false
+
+   @AppStorage("appAppearance") var appAppearance: Int = 3
+   @AppStorage("ephemeralClipboard") var ephemeralClipboard: Bool = true
+   @AppStorage("privacyMode") var privacyMode: Bool = true
+   @AppStorage("accentColorIndex") var accentColorIndex: Int = 0
    
-   //UserDefaults values
-   @Published var ephemeralClipboard: Bool {
-      didSet {
-         UserDefaults.standard.set(ephemeralClipboard, forKey: "ephemeralClipboard")
-      }
-   }
-   
-   @Published var privacyMode: Bool {
-      didSet {
-         UserDefaults.standard.set(privacyMode, forKey: "privacyMode")
-      }
-   }
-   
-   @Published var isFirstLaunch: Bool {
-      didSet {
-         UserDefaults.standard.set(isFirstLaunch, forKey: "isFirstLaunch")
-      }
-   }
-   
-   @Published var accentColorIndex: Int {
-      didSet {
-         UserDefaults.standard.set(accentColorIndex, forKey: "accentColorIndex")
-      }
-   }
+   let supportsHaptics: Bool = CHHapticEngine.capabilitiesForHardware().supportsHaptics
+   let colors: [Color] = [.purple, .red, .blue, .green, .orange, .secondary]
+
 
    func copyToClipboard(notes: String) {
       let copiedNotes = notes

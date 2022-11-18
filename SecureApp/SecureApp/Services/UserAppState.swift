@@ -7,33 +7,58 @@
 
 import Foundation
 
-enum AppStatus: Comparable {
+class UserAppState: ObservableObject {
+   @Published var authState: AuthState = .loggedOut
+   
+   static func login(credentials: Credentials,
+                     completion: @escaping (Result<Bool,AuthenticationError>) -> Void) async {
+      
+      do {
+         try await Task.sleep(nanoseconds:  2_000_000_000)
+         
+         DispatchQueue.main.async {
+            if credentials.password == "password" {
+               completion(.success(true))
+               
+            } else {
+               completion(.failure(.invalidCredentials))
+            }
+         }
+      } catch {
+         completion(.failure(.deniedAccess))
+      }
+   }
+   
+   func updateAppStatus(with authState: AuthState) {
+      self.authState = authState
+   }
+}
+
+enum AuthState: Comparable {
    case loggedOut
    case authenticating
    case authenticated
    case authorizing
    case authorized
-}
-
-class UserAppState: ObservableObject {
-   @Published var currentStatus: AppStatus = .loggedOut
    
-   static func login(credentials: Credentials,
-                     completion: @escaping (Result<Bool,AuthenticationError>) -> Void) async {
-      try? await Task.sleep(nanoseconds:  1_000_000_000)
-      
-      if credentials.password == "password" {
-         completion(.success(true))
-      } else {
-         completion(.failure(.invalidCredentials))
+   var isLoading: Bool {
+      return self == .authenticating || self == .authorizing
+   }
+   
+   var title: String {
+      switch self {
+         case .loggedOut:
+            return "Logged Out"
+         case .authenticating:
+            return "Authenticating…"
+         case .authenticated:
+            return "Authenticated"
+         case .authorizing:
+            return "Authorizing…"
+         case .authorized:
+            return "Authorized"
       }
-      
    }
-   
-   func updateAppStatus(with currentStatus: AppStatus) {
-      self.currentStatus = currentStatus
-   }
-
 }
 
 

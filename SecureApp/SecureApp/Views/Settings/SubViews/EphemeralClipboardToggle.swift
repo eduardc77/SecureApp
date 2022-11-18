@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct EphemeralClipboardToggle: View {
-   
    @ObservedObject var settingsViewModel: SettingsViewModel
    
    var body: some View {
@@ -18,8 +17,8 @@ struct EphemeralClipboardToggle: View {
             title: { Text("Ephemeral clipboard") },
             icon: { Image(systemName: "timer").font(.title3) })
       })
-      .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
       
+      .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
    }
 }
 

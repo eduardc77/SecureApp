@@ -39,10 +39,10 @@ struct AppLockView: View {
                      keychainService.requestBiometricUnlock { (result: Result<Credentials, AuthenticationError>) in
                         switch result {
                            case .success:
-                              authentication.currentStatus = .authorized
+                              authentication.authState = .authorized
                               keychainService.appLocked = false
                            case .failure:
-                              authentication.currentStatus = .loggedOut
+                              authentication.authState = .loggedOut
                         }
                      }
                     }, label: {
@@ -60,12 +60,12 @@ struct AppLockView: View {
             }
             
             .onAppear {
-               if keychainService.unlockMethodIsActive == false {
+               if keychainService.biometricUnlockIsActive == false {
                   keychainService.appLocked = false
                   print("No biometric authentication")
                }
                
-               if keychainService.unlockMethodIsActive == true {
+               if keychainService.biometricUnlockIsActive == true {
                   keychainService.requestBiometricUnlock { (result: Result<Credentials, AuthenticationError>) in
                      switch result {
                         case .success:

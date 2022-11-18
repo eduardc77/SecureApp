@@ -8,43 +8,44 @@
 import SwiftUI
 
 struct AppStateSwitcher: View {
-   @EnvironmentObject var authentication: UserAppState
-   @EnvironmentObject var keychainService: KeychainService
+   @EnvironmentObject private var authentication: UserAppState
+   @EnvironmentObject private var keychainService: KeychainService
    @ObservedObject var settingsViewModel: SettingsViewModel
-   @State var isOnboardingPresented: Bool = false
+   @State private var isOnboardingPresented: Bool = false
+   @Environment(\.colorScheme) private var colorScheme
    
    var body: some View {
       Group {
-         if authentication.currentStatus  == .loggedOut {
-            LoginView()
+         if settingsViewModel.backgroundPrivacy, !authentication.authState.isLoading {
+            PrivacyView()
             
-         } else {
-            if !keychainService.appLocked {
-               if settingsViewModel.backgroundPrivacy {
-                  PrivacyView()
-               } else {
+         }  else {
+            if authentication.authState  == .authorized {
+               if !keychainService.appLocked {
                   AppTabView(settingsViewModel: settingsViewModel)
+                  
+               } else {
+                  AppLockView(viewModel: settingsViewModel)
                }
-
             } else {
-               AppLockView(viewModel: settingsViewModel)
+               LoginView()
             }
          }
       }
+      .preferredColorScheme(settingsViewModel.appAppearance == 3 ? colorScheme : settingsViewModel.appAppearance == 1 ? .dark : .light)
       
-      .onChange(of: settingsViewModel.onBoardingSheetIsPresented) { newValue in
+      .onChange(of: keychainService.onBoardingSheetIsPresented) { newValue in
          isOnboardingPresented = newValue
       }
       
-      .onAppear(perform: {
-         if settingsViewModel.isFirstLaunch {
-            settingsViewModel.onBoardingSheetIsPresented = true
+      .onAppear {
+         if keychainService.isFirstLaunch {
+            keychainService.onBoardingSheetIsPresented = true
          }
-      })
+      }
       
-      .sheet(isPresented: $isOnboardingPresented,
-             onDismiss: { isOnboardingPresented = false }) {
-         OnboardingView(settingsViewModel: settingsViewModel)
+      .sheet(isPresented: $isOnboardingPresented) {
+         OnboardingView()
             .accentColor(settingsViewModel.colors[settingsViewModel.accentColorIndex])
       }
    }

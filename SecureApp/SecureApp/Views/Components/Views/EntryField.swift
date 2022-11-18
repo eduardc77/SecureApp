@@ -8,30 +8,35 @@
 import SwiftUI
 
 struct EntryField: View {
+   @Binding var text: String
    var sfSymbolName: String
    var placeholder: String
-   var prompt: String
-   @Binding var field: String
+   var prompt: String = ""
    var isSecure = false
    
    var body: some View {
       VStack(alignment: .leading) {
          HStack {
             Image(systemName: sfSymbolName)
-               .foregroundColor(.gray)
-               .font(.headline)
+               .foregroundColor(.accentColor)
                .frame(width: 20)
+            
             if isSecure {
-               SecureField(placeholder, text: $field)
+               SecureField(placeholder, text: $text)
+               
             } else {
-               TextField(placeholder, text: $field)
+               TextField(placeholder, text: $text)
             }
-         }.autocapitalization(.none)
-            .padding(8)
-            .background(Color(.secondarySystemBackground))
-            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 1))
+         }
+         .autocapitalization(.none)
+         .padding(8)
+         .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(.gray), lineWidth: 1))
+         .background(Color(.systemBackground))
+         .cornerRadius(6)
+         
          Text(prompt)
             .fixedSize(horizontal: false, vertical: true)
+            .foregroundColor(.red)
             .font(.caption)
       }
    }
@@ -39,6 +44,6 @@ struct EntryField: View {
 
 struct EntryField_Previews: PreviewProvider {
    static var previews: some View {
-      EntryField(sfSymbolName: "envelope", placeholder: "Email Address", prompt: "Enter a valid email address", field: .constant(""))
+      EntryField(text: .constant(""),  sfSymbolName: "envelope", placeholder: "Email Address", prompt: "Enter a valid email address")
    }
 }
