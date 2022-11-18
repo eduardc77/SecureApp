@@ -5,7 +5,7 @@
 //  Created by Eduard Caziuc on 17.11.2022.
 //
 
-import Foundation
+import SwiftUI
 import SwiftKeychainWrapper
 import LocalAuthentication
 
