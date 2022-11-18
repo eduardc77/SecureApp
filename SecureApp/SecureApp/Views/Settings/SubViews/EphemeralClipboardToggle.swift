@@ -18,7 +18,7 @@ struct EphemeralClipboardToggle: View {
             title: { Text("Ephemeral clipboard") },
             icon: { Image(systemName: "timer").font(.title3) })
       })
-      .toggleStyle(SwitchToggleStyle(tint: settingsViewModel.colors[settingsViewModel.accentColorIndex]))
+      .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
       
    }
 }

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AppTabView: View {
+   @EnvironmentObject var keychainService: KeychainService
    @ObservedObject var settingsViewModel: SettingsViewModel
    
    var body: some View {
@@ -19,8 +20,7 @@ struct AppTabView: View {
             }
             .tag(0)
          
-         SettingsView(settingsViewModel: settingsViewModel,
-                      biometricType: settingsViewModel.biometricType())
+         SettingsView(settingsViewModel: settingsViewModel)
          
          .tabItem {
             Label(title: { Text("Settings") },

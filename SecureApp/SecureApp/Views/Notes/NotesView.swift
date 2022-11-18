@@ -39,7 +39,7 @@ struct NotesView: View {
                Label(settingsViewModel.ephemeralClipboard ? "Copied to clipboard (60sec)" : "Copied to clipboard", systemImage: settingsViewModel.ephemeralClipboard ? "timer" : "checkmark.circle")
                   .padding(14)
                   .foregroundColor(Color.white)
-                  .background(settingsViewModel.colors[settingsViewModel.accentColorIndex])
+                  .background(Color.accentColor)
                   .cornerRadius(30)
             }
          }

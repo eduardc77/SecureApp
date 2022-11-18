@@ -17,7 +17,7 @@ struct OnboardingCell: View {
       HStack {
          ZStack {
             Circle()
-               .foregroundColor(.purple)
+               .foregroundColor(.accentColor)
                .frame(minWidth: 50, maxWidth: 60, minHeight: 50, maxHeight: 60)
             
             Image(systemName: image)

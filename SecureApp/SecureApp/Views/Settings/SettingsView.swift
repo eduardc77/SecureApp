@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct SettingsView: View {
-   @EnvironmentObject var authentication: Authentication
+   @EnvironmentObject var keychainService: KeychainService
+   @EnvironmentObject var authentication: UserAppState
    @ObservedObject var settingsViewModel: SettingsViewModel
-   @State var biometricType: SettingsViewModel.BiometricType
    
    var body: some View {
       NavigationView {
@@ -18,11 +18,10 @@ struct SettingsView: View {
             List {
                Section(header: Text("Security")) {
                   
-                  UnlockMethodToggle(settingsViewModel: settingsViewModel,
-                                     biometricType: biometricType)
+                  UnlockMethodToggle()
                   
-                  if settingsViewModel.unlockMethodIsActive {
-                     LockTimerPicker(settingsViewModel: settingsViewModel)
+                  if keychainService.unlockMethodIsActive {
+                     LockTimerPicker()
                   }
                   
                   PrivacyModeToggle(settingsViewModel: settingsViewModel)
@@ -40,7 +39,9 @@ struct SettingsView: View {
                Section {
                   Button(action: {
                      withAnimation {
-                        authentication.updateValidation(success: false)
+                        DispatchQueue.main.async {
+                           authentication.updateAppStatus(with: .loggedOut)
+                        }
                      }
                   }, label: {
                      
@@ -55,10 +56,7 @@ struct SettingsView: View {
                   })
                }
             }
-            
-            .onAppear(perform: {
-               biometricType = settingsViewModel.biometricType()
-            })
+
             .listStyle(.insetGrouped)
             .navigationBarTitle("Settings")
          }
@@ -69,6 +67,6 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
    static var previews: some View {
-      SettingsView(settingsViewModel: SettingsViewModel(), biometricType: SettingsViewModel.BiometricType.face)
+      SettingsView(settingsViewModel: SettingsViewModel())
    }
 }

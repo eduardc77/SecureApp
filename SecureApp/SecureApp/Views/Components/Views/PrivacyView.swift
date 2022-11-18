@@ -8,12 +8,10 @@
 import SwiftUI
 
 struct PrivacyView: View {
-   var accentColor: Color
-   
    var body: some View {
       
       ZStack {
-         accentColor.ignoresSafeArea()
+         Color.accentColor.ignoresSafeArea()
          
          Image(systemName: "eye.slash")
             .foregroundColor(.white)
@@ -24,6 +22,6 @@ struct PrivacyView: View {
 
 struct PrivacyView_Previews: PreviewProvider {
    static var previews: some View {
-      PrivacyView(accentColor: .green)
+      PrivacyView()
    }
 }

@@ -8,16 +8,14 @@
 import SwiftUI
 
 struct UnlockMethodToggle: View {
-   
-   @ObservedObject var settingsViewModel: SettingsViewModel
-   var biometricType: SettingsViewModel.BiometricType
-   
+   @EnvironmentObject var keychainService: KeychainService
+ 
    var body: some View {
-      Toggle(isOn: $settingsViewModel.faceIdToggle,
+      Toggle(isOn: $keychainService.unlockMethodIsActive,
              label: {
          
          Label(title: {
-            switch biometricType {
+            switch KeychainService.biometricType {
                case .none:
                   Text("Unlock with device passcode")
                case .touch:
@@ -29,7 +27,7 @@ struct UnlockMethodToggle: View {
             }
          }, icon: {
             Group {
-               switch biometricType {
+               switch KeychainService.biometricType {
                   case .none:
                      Image(systemName: "key.viewfinder")
                   case .touch:
@@ -43,17 +41,21 @@ struct UnlockMethodToggle: View {
             .font(.title2)
          })
       })
-      .toggleStyle(SwitchToggleStyle(tint: settingsViewModel.colors[settingsViewModel.accentColorIndex]))
+      .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
       
-      .onChange(of: settingsViewModel.faceIdToggle, perform: { _ in
+      .onChange(of: keychainService.unlockMethodIsActive, perform: { unlockMethodIsActive in
          
-         if settingsViewModel.faceIdToggle {
-            settingsViewModel.addBiometricAuthentication()
-            print("Waiting for authentication")
-         }
-         
-         if !settingsViewModel.faceIdToggle {
-            settingsViewModel.turnOffBiometricAuthentication()
+         if unlockMethodIsActive {
+            keychainService.requestBiometricUnlock { (result: Result<Credentials, AuthenticationError>) in
+               switch result {
+                  case .success:
+                     keychainService.unlockMethodIsActive = true
+                  case .failure:
+                     keychainService.unlockMethodIsActive = false
+               }
+            }
+         } else {
+            keychainService.unlockMethodIsActive = false
          }
       })
    }
@@ -61,6 +63,6 @@ struct UnlockMethodToggle: View {
 
 struct UnlockMethodToggle_Previews: PreviewProvider {
    static var previews: some View {
-      UnlockMethodToggle(settingsViewModel: SettingsViewModel(), biometricType: SettingsViewModel.BiometricType.face)
+      UnlockMethodToggle()
    }
 }

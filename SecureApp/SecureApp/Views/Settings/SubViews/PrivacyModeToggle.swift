@@ -16,7 +16,7 @@ struct PrivacyModeToggle: View {
          Label(title: { Text("Background Privacy") },
                icon: { Image(systemName: "eye.slash").font(.title3) })
       })
-      .toggleStyle(SwitchToggleStyle(tint: settingsViewModel.colors[settingsViewModel.accentColorIndex]))
+      .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
    }
 }
 

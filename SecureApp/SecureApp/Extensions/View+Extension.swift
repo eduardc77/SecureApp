@@ -7,19 +7,10 @@
 
 import SwiftUI
 
-extension View {
-   
-   func animateForever(using animation: Animation = Animation.easeInOut(duration: 1.6), autoreverses: Bool = true, _ action: @escaping () -> Void) -> some View {
-      return onAppear {
-         withAnimation(animation.repeatForever(autoreverses: autoreverses)) {
-            action()
-         }
-      }
-   }
-   
-   func adaptiveImage(biometricType: SettingsViewModel.BiometricType) -> String {
-      
-      switch biometricType {
+extension String {
+   static var adaptiveBiometricImage: String {
+      switch
+      KeychainService.biometricType {
          case .none:
             return "key"
          case .touch:
@@ -31,9 +22,9 @@ extension View {
       }
    }
    
-   func adaptiveMessage(biometricType: SettingsViewModel.BiometricType) -> LocalizedStringKey  {
-      
-      switch biometricType {
+   static var adaptiveBiometricDescription: String  {
+      switch
+      KeychainService.biometricType {
          case .none:
             return "Unlock the app with iPhone passcode"
          case .touch:
@@ -42,6 +33,42 @@ extension View {
             return "Unlock the app with Face ID"
          case .unknown:
             return "Unlock the app with iPhone passcode"
+      }
+   }
+   
+   static var adaptiveBiometricMessage: String  {
+      switch KeychainService.biometricType {
+         case .none:
+            return "Unlock with iPhone passcode"
+         case .touch:
+            return "Unlock with Touch ID"
+         case .face:
+            return "Unlock with Face ID"
+         case .unknown:
+            return "Unlock with iPhone passcode"
+      }
+   }
+   
+   static var adaptiveBiometricTitle: String  {
+      switch KeychainService.biometricType {
+         case .none:
+            return "iPhone Passcode"
+         case .touch:
+            return "Touch ID"
+         case .face:
+            return "Face ID"
+         case .unknown:
+            return "iPhone Passcode"
+      }
+   }
+}
+
+extension View {
+   func animateForever(using animation: Animation = Animation.easeInOut(duration: 1.6), autoreverses: Bool = true, _ action: @escaping () -> Void) -> some View {
+      return onAppear {
+         withAnimation(animation.repeatForever(autoreverses: autoreverses)) {
+            action()
+         }
       }
    }
 }

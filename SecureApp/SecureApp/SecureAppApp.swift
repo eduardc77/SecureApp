@@ -9,20 +9,22 @@ import SwiftUI
 
 @main
 struct SecureAppApp: App {
-   @StateObject var authentication = Authentication()
+   @StateObject var authentication = UserAppState()
+   @StateObject var keychainService = KeychainService()
    @StateObject var settingsViewModel = SettingsViewModel()
    @Environment(\.scenePhase) var scenePhase
    
    var body: some Scene {
       WindowGroup {
          AppStateSwitcher(settingsViewModel: settingsViewModel)
-            .accentColor(settingsViewModel.colors[settingsViewModel.accentColorIndex])
             .environmentObject(authentication)
+            .environmentObject(keychainService)
+            .accentColor(settingsViewModel.colors[settingsViewModel.accentColorIndex])
       }
       
       .onChange(of: scenePhase) { newPhase in
          if newPhase == .inactive {
-            if settingsViewModel.privacyMode && settingsViewModel.isUnlocked {
+            if settingsViewModel.privacyMode && !keychainService.appLocked {
                settingsViewModel.backgroundPrivacy = true
             }
          }
@@ -31,15 +33,15 @@ struct SecureAppApp: App {
             if settingsViewModel.privacyMode {
                settingsViewModel.backgroundPrivacy = false
             }
-            settingsViewModel.lockAppTimerIsRunning = false
+            keychainService.lockAppTimerIsRunning = false
          }
          
          else if newPhase == .background {
             if settingsViewModel.privacyMode {
                settingsViewModel.backgroundPrivacy = false
             }
-            if settingsViewModel.unlockMethodIsActive {
-               settingsViewModel.lockAppInBackground()
+            if keychainService.unlockMethodIsActive {
+               keychainService.lockAppInBackground()
             }
          }
       }

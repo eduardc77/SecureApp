@@ -8,24 +8,26 @@
 import SwiftUI
 
 struct AppStateSwitcher: View {
-   @EnvironmentObject var authentication: Authentication
+   @EnvironmentObject var authentication: UserAppState
+   @EnvironmentObject var keychainService: KeychainService
    @ObservedObject var settingsViewModel: SettingsViewModel
    @State var isOnboardingPresented: Bool = false
    
    var body: some View {
       Group {
-         if !authentication.isValidated {
+         if authentication.currentStatus  == .loggedOut {
             LoginView()
             
          } else {
-            if settingsViewModel.isUnlocked {
+            if !keychainService.appLocked {
                if settingsViewModel.backgroundPrivacy {
-                  PrivacyView(accentColor: settingsViewModel.colors[settingsViewModel.accentColorIndex])
+                  PrivacyView()
                } else {
                   AppTabView(settingsViewModel: settingsViewModel)
                }
+
             } else {
-               AuthenticationView(viewModel: settingsViewModel, biometricType: settingsViewModel.biometricType(), settingsViewModel: settingsViewModel)
+               AppLockView(viewModel: settingsViewModel)
             }
          }
       }
@@ -33,7 +35,6 @@ struct AppStateSwitcher: View {
       .onChange(of: settingsViewModel.onBoardingSheetIsPresented) { newValue in
          isOnboardingPresented = newValue
       }
-      
       
       .onAppear(perform: {
          if settingsViewModel.isFirstLaunch {
@@ -43,7 +44,8 @@ struct AppStateSwitcher: View {
       
       .sheet(isPresented: $isOnboardingPresented,
              onDismiss: { isOnboardingPresented = false }) {
-         OnboardingView(settingsViewModel: settingsViewModel, biometricType: settingsViewModel.biometricType())
+         OnboardingView(settingsViewModel: settingsViewModel)
+            .accentColor(settingsViewModel.colors[settingsViewModel.accentColorIndex])
       }
    }
 }
