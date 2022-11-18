@@ -51,7 +51,7 @@ final class KeychainService: ObservableObject {
    
    init() {
       unlockMethodIsActive = UserDefaults.standard.object(forKey: "biometricAuthentication") as? Bool ?? false
-      autoLock = UserDefaults.standard.object(forKey: "autoLock") as? Int ?? 1
+      autoLock = UserDefaults.standard.object(forKey: "autoLock") as? Int ?? 0
    }
    
    func requestBiometricUnlock(completion: @escaping (Result<Credentials, AuthenticationError>) -> Void) {

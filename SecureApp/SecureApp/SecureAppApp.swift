@@ -40,7 +40,7 @@ struct SecureAppApp: App {
             if settingsViewModel.privacyMode {
                settingsViewModel.backgroundPrivacy = false
             }
-            if keychainService.unlockMethodIsActive {
+					 if keychainService.unlockMethodIsActive, authentication.currentStatus != .loggedOut {
                keychainService.lockAppInBackground()
             }
          }
