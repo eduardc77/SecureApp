@@ -27,7 +27,7 @@ struct AppStateSwitcher: View {
             LoginView(viewModel: LoginViewModel(authentication: authentication))
          }
       }
-      
+			.navigationViewStyle(.stack)
       .preferredColorScheme(settingsViewModel.appAppearance == 3 ? colorScheme : settingsViewModel.appAppearance == 1 ? .dark : .light)
       
       .onChange(of: keychainService.onBoardingSheetIsPresented) { newValue in
@@ -50,5 +50,7 @@ struct AppStateSwitcher: View {
 struct AppStateSwitcher_Previews: PreviewProvider {
    static var previews: some View {
       AppStateSwitcher(settingsViewModel: SettingsViewModel())
+			 .environmentObject(UserAppState())
+			 .environmentObject(KeychainService())
    }
 }

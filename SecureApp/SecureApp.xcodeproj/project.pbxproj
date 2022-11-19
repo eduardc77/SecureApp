@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		DD092E3E2926D9B900FCE0E1 /* EntryField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD092E3D2926D9B900FCE0E1 /* EntryField.swift */; };
-		DD5933D329263D8B00C79D57 /* SecureAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5933D229263D8B00C79D57 /* SecureAppApp.swift */; };
+		DD5933D329263D8B00C79D57 /* SecureApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5933D229263D8B00C79D57 /* SecureApp.swift */; };
 		DD5933D729263D8E00C79D57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD5933D629263D8E00C79D57 /* Assets.xcassets */; };
 		DD5933DA29263D8E00C79D57 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD5933D929263D8E00C79D57 /* Preview Assets.xcassets */; };
 		DD5933E229263E0800C79D57 /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5933E129263E0800C79D57 /* PrivacyView.swift */; };
 		DD5933E429263EF000C79D57 /* AppLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5933E329263EF000C79D57 /* AppLockView.swift */; };
-		DD5933E72926401D00C79D57 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5933E62926401D00C79D57 /* View+Extension.swift */; };
+		DD5933E72926401D00C79D57 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5933E62926401D00C79D57 /* String+Extension.swift */; };
 		DD5933EA2926405A00C79D57 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5933E92926405A00C79D57 /* SettingsViewModel.swift */; };
 		DD5933EC2926419200C79D57 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5933EB2926419200C79D57 /* SettingsView.swift */; };
 		DD5933EF292642EE00C79D57 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5933EE292642EE00C79D57 /* OnboardingView.swift */; };
@@ -38,17 +38,18 @@
 		DDEF8D8D2927985100642E59 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D8C2927985100642E59 /* LoadingView.swift */; };
 		DDEF8D902927B1BB00642E59 /* RoundedRectangleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D8F2927B1BB00642E59 /* RoundedRectangleButtonStyle.swift */; };
 		DDEF8D922927D9B500642E59 /* ColorSchemeToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D912927D9B500642E59 /* ColorSchemeToggle.swift */; };
+		EA5FD3AE292973810017849E /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5FD3AD292973810017849E /* Animations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		DD092E3D2926D9B900FCE0E1 /* EntryField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryField.swift; sourceTree = "<group>"; };
 		DD5933CF29263D8B00C79D57 /* SecureApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SecureApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DD5933D229263D8B00C79D57 /* SecureAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureAppApp.swift; sourceTree = "<group>"; };
+		DD5933D229263D8B00C79D57 /* SecureApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureApp.swift; sourceTree = "<group>"; };
 		DD5933D629263D8E00C79D57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DD5933D929263D8E00C79D57 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DD5933E129263E0800C79D57 /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		DD5933E329263EF000C79D57 /* AppLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockView.swift; sourceTree = "<group>"; };
-		DD5933E62926401D00C79D57 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
+		DD5933E62926401D00C79D57 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		DD5933E92926405A00C79D57 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		DD5933EB2926419200C79D57 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DD5933EE292642EE00C79D57 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -72,6 +73,7 @@
 		DDEF8D8C2927985100642E59 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		DDEF8D8F2927B1BB00642E59 /* RoundedRectangleButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedRectangleButtonStyle.swift; sourceTree = "<group>"; };
 		DDEF8D912927D9B500642E59 /* ColorSchemeToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeToggle.swift; sourceTree = "<group>"; };
+		EA5FD3AD292973810017849E /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,10 +101,10 @@
 			children = (
 				DD5933E329263EF000C79D57 /* AppLockView.swift */,
 				DD5933E129263E0800C79D57 /* PrivacyView.swift */,
-				DD5934022926574900C79D57 /* PopupView.swift */,
 				DDEF8D8A2927963600642E59 /* BlurView.swift */,
 				DDEF8D8C2927985100642E59 /* LoadingView.swift */,
 				DD092E3D2926D9B900FCE0E1 /* EntryField.swift */,
+				DD5934022926574900C79D57 /* PopupView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -126,7 +128,7 @@
 		DD5933D129263D8B00C79D57 /* SecureApp */ = {
 			isa = PBXGroup;
 			children = (
-				DD5933D229263D8B00C79D57 /* SecureAppApp.swift */,
+				DD5933D229263D8B00C79D57 /* SecureApp.swift */,
 				DD59340B29268E3200C79D57 /* Services */,
 				DD5933E029263DE500C79D57 /* Views */,
 				DD59341429268EC800C79D57 /* Models */,
@@ -162,7 +164,8 @@
 		DD5933E529263FFC00C79D57 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				DD5933E62926401D00C79D57 /* View+Extension.swift */,
+				DD5933E62926401D00C79D57 /* String+Extension.swift */,
+				DD59340E29268E7200C79D57 /* UIApplication+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -219,7 +222,6 @@
 		DD59340B29268E3200C79D57 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				DD59340E29268E7200C79D57 /* UIApplication+Extension.swift */,
 				DD59341029268E9200C79D57 /* KeychainService.swift */,
 				DD59341C29268FFB00C79D57 /* UserAppState.swift */,
 			);
@@ -247,6 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				DDEF8D8F2927B1BB00642E59 /* RoundedRectangleButtonStyle.swift */,
+				EA5FD3AD292973810017849E /* Animations.swift */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -335,14 +338,15 @@
 				DD59341629268ED400C79D57 /* Credentials.swift in Sources */,
 				DDEF8D902927B1BB00642E59 /* RoundedRectangleButtonStyle.swift in Sources */,
 				DD5933F9292646C100C79D57 /* UnlockMethodToggle.swift in Sources */,
-				DD5933D329263D8B00C79D57 /* SecureAppApp.swift in Sources */,
-				DD5933E72926401D00C79D57 /* View+Extension.swift in Sources */,
+				DD5933D329263D8B00C79D57 /* SecureApp.swift in Sources */,
+				DD5933E72926401D00C79D57 /* String+Extension.swift in Sources */,
 				DD5933E429263EF000C79D57 /* AppLockView.swift in Sources */,
 				DD59341929268F4F00C79D57 /* LoginView.swift in Sources */,
 				DDEF8D8D2927985100642E59 /* LoadingView.swift in Sources */,
 				DD5933F12926432900C79D57 /* OnboardingCell.swift in Sources */,
 				DDEF8D8B2927963600642E59 /* BlurView.swift in Sources */,
 				DD5933FB292646DB00C79D57 /* PrivacyModeToggle.swift in Sources */,
+				EA5FD3AE292973810017849E /* Animations.swift in Sources */,
 				DDEF8D922927D9B500642E59 /* ColorSchemeToggle.swift in Sources */,
 				DD5934032926574900C79D57 /* PopupView.swift in Sources */,
 				DD5933EF292642EE00C79D57 /* OnboardingView.swift in Sources */,

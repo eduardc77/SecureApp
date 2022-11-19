@@ -19,9 +19,9 @@ struct AppLockView: View {
          ZStack {
             viewModel.colors[viewModel.accentColorIndex]
                .ignoresSafeArea()
-            
+
             VStack {
-               Image(systemName: "lock.fill")
+							Image(systemName: keychainService.appLocked ? "lock.fill" : "lock.open.fill")
                   .resizable()
                   .scaledToFit()
                   .frame(maxWidth: 100, maxHeight: 100)
@@ -30,7 +30,7 @@ struct AppLockView: View {
                   .scaleEffect(scale)
                   .animateForever { scale = 0.90 }
                   .padding()
-               
+
                Spacer()
                
                VStack {
@@ -40,7 +40,7 @@ struct AppLockView: View {
                      
                      Label(
                         title: { Text(String.adaptiveBiometricMessage) },
-                        icon: { Image(systemName: String.adaptiveBiometricImage) }
+												icon: { Image(systemName: String.adaptiveBiometricImage).font(.title2) }
                      )})
                   
                   .foregroundColor(.white)
@@ -66,6 +66,7 @@ struct AppLockView: View {
                   authentication.updateAuthState(with: .loggedOut)
                   keychainService.appLocked = false
                }
+
             } label: {
                Text("Logout")
                   .foregroundColor(.white)
@@ -78,5 +79,7 @@ struct AppLockView: View {
 struct LoggingView_Previews: PreviewProvider {
    static var previews: some View {
       AppLockView(viewModel: SettingsViewModel())
+			 .environmentObject(UserAppState())
+			 .environmentObject(KeychainService())
    }
 }

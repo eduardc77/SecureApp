@@ -18,7 +18,7 @@ struct SettingsView: View {
          VStack {
             List {
                Section(header: Text("Security")) {
-                  
+
                   UnlockMethodToggle()
                   
                   if keychainService.biometricUnlockIsActive {
@@ -76,5 +76,7 @@ struct SettingsView: View {
 struct SettingsView_Previews: PreviewProvider {
    static var previews: some View {
       SettingsView(settingsViewModel: SettingsViewModel())
+			 .environmentObject(UserAppState())
+			 .environmentObject(KeychainService())
    }
 }

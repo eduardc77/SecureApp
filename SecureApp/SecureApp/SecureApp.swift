@@ -1,5 +1,5 @@
 //
-//  SecureAppApp.swift
+//  SecureApp.swift
 //  SecureApp
 //
 //  Created by Eduard Caziuc on 17.11.2022.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct SecureAppApp: App {
+struct SecureApp: App {
    @StateObject private var authentication = UserAppState()
    @StateObject private var keychainService = KeychainService()
    @StateObject private var settingsViewModel = SettingsViewModel()

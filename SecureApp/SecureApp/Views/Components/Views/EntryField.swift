@@ -29,15 +29,17 @@ struct EntryField: View {
             }
          }
          .autocapitalization(.none)
-         .padding(8)
-         .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(.gray), lineWidth: 1))
+         .padding(10)
+				 .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(.systemGray3), lineWidth: 1))
          .background(Color(.systemBackground))
          .cornerRadius(6)
-         
-         Text(prompt)
-            .fixedSize(horizontal: false, vertical: true)
-            .foregroundColor(.red)
-            .font(.caption)
+
+				if !prompt.isEmpty {
+					Text(prompt)
+						.fixedSize(horizontal: false, vertical: true)
+						.foregroundColor(.red)
+						.font(.caption)
+				}
       }
    }
 }
