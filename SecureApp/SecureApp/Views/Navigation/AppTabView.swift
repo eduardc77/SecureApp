@@ -12,7 +12,8 @@ struct AppTabView: View {
    @ObservedObject var settingsViewModel: SettingsViewModel
    
    var body: some View {
-      TabView(content: {
+      
+      TabView {
          NotesView(settingsViewModel: settingsViewModel)
             .tabItem {
                Label(title: { Text("Notes") },
@@ -22,12 +23,12 @@ struct AppTabView: View {
          
          SettingsView(settingsViewModel: settingsViewModel)
          
-         .tabItem {
-            Label(title: { Text("Settings") },
-                  icon: { Image(systemName: "gear") })
-         }
-         .tag(1)
-      })
+            .tabItem {
+               Label(title: { Text("Settings") },
+                     icon: { Image(systemName: "gear") })
+            }
+            .tag(1)
+      }
    }
 }
 

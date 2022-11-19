@@ -20,9 +20,12 @@ struct SecureAppApp: App {
          AppStateSwitcher(settingsViewModel: settingsViewModel)
             .environmentObject(authentication)
             .environmentObject(keychainService)
+
+            .overlay((settingsViewModel.backgroundPrivacy && !authentication.authState.isLoading && !keychainService.appLocked) ? PrivacyView() : nil)
+      
             .accentColor(settingsViewModel.colors[settingsViewModel.accentColorIndex])
       }
-
+      
       .onChange(of: scenePhase) { newPhase in
          if newPhase == .inactive {
             if settingsViewModel.privacyMode, !keychainService.appLocked, !authentication.authState.isLoading {

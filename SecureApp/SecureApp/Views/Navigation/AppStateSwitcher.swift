@@ -16,22 +16,18 @@ struct AppStateSwitcher: View {
    
    var body: some View {
       Group {
-         if settingsViewModel.backgroundPrivacy, !authentication.authState.isLoading {
-            PrivacyView()
-            
-         }  else {
-            if authentication.authState  == .authorized {
-               if !keychainService.appLocked {
-                  AppTabView(settingsViewModel: settingsViewModel)
-                  
-               } else {
-                  AppLockView(viewModel: settingsViewModel)
-               }
+         if authentication.authState  == .authorized {
+            if !keychainService.appLocked {
+               AppTabView(settingsViewModel: settingsViewModel)
+               
             } else {
-               LoginView()
+               AppLockView(viewModel: settingsViewModel)
             }
+         } else {
+            LoginView(viewModel: LoginViewModel(authentication: authentication))
          }
       }
+      
       .preferredColorScheme(settingsViewModel.appAppearance == 3 ? colorScheme : settingsViewModel.appAppearance == 1 ? .dark : .light)
       
       .onChange(of: keychainService.onBoardingSheetIsPresented) { newValue in

@@ -33,20 +33,11 @@ struct AppLockView: View {
                
                Spacer()
                
-               // MARK: - Login
                VStack {
                   Button(action: {
-                     keychainService.requestBiometricUnlock { (result: Result<Credentials, AuthenticationError>) in
-                        switch result {
-                           case .success:
-                              authentication.authState = .authorized
-                              keychainService.appLocked = false
-                           case .failure:
-                              authentication.authState = .loggedOut
-                        }
-                     }
-                    }, label: {
-                       
+                     keychainService.biometricAuthentication()
+                  }, label: {
+                     
                      Label(
                         title: { Text(String.adaptiveBiometricMessage) },
                         icon: { Image(systemName: String.adaptiveBiometricImage) }
@@ -58,33 +49,21 @@ struct AppLockView: View {
                }
                .padding()
             }
-            
-            .onAppear {
-               if keychainService.biometricUnlockIsActive == false {
-                  keychainService.appLocked = false
-                  print("No biometric authentication")
-               }
-               
-               if keychainService.biometricUnlockIsActive == true {
-                  keychainService.requestBiometricUnlock { (result: Result<Credentials, AuthenticationError>) in
-                     switch result {
-                        case .success:
-                           keychainService.appLocked = false
-                        case .failure:
-                           keychainService.appLocked = true
-                     }
-                  }
-                  print("Biometric authentication")
-               }
-            }
-            
          }
          .transition(.identity)
+         
+         .onAppear {
+            if keychainService.biometricUnlockIsActive {
+               keychainService.biometricAuthentication()
+            } else {
+               keychainService.appLocked = false
+            }
+         }
          
          .toolbar {
             Button {
                DispatchQueue.main.async {
-                  authentication.updateAppStatus(with: .loggedOut)
+                  authentication.updateAuthState(with: .loggedOut)
                   keychainService.appLocked = false
                }
             } label: {

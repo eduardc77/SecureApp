@@ -149,8 +149,8 @@
 			isa = PBXGroup;
 			children = (
 				DD5933F22926449C00C79D57 /* Navigation */,
-				DD59341729268F3800C79D57 /* Login */,
 				DD5933ED292642D200C79D57 /* Onboarding */,
+				DD59341729268F3800C79D57 /* Login */,
 				DD59340429265E4300C79D57 /* Notes */,
 				DD5933E82926404100C79D57 /* Settings */,
 				DD092E3C2926D99400FCE0E1 /* Components */,

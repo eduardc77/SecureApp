@@ -43,7 +43,7 @@ struct SettingsView: View {
                   Button(action: {
                      withAnimation {
                         DispatchQueue.main.async {
-                           authentication.updateAppStatus(with: .loggedOut)
+                           authentication.updateAuthState(with: .loggedOut)
                         }
                      }
                   }, label: {

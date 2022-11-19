@@ -8,29 +8,44 @@
 import Foundation
 
 class UserAppState: ObservableObject {
-   @Published var authState: AuthState = .loggedOut
+   @Published private(set) var authState: AuthState = .loggedOut
    
-   static func login(credentials: Credentials,
-                     completion: @escaping (Result<Bool,AuthenticationError>) -> Void) async {
+   func login(credentials: Credentials,
+              completion: @escaping (Result<Bool,AuthenticationError>) -> Void) async {
+      updateAuthState(with: .authenticating)
       
       do {
          try await Task.sleep(nanoseconds:  2_000_000_000)
-         
-         DispatchQueue.main.async {
-            if credentials.password == "password" {
+
+         if credentials.password == "password" {
+            DispatchQueue.main.async { [self] in
+               updateAuthState(with: .authorizing)
+            }
+            
+            try await Task.sleep(nanoseconds:  2_600_000_000)
+            
+            DispatchQueue.main.async { [self] in
                completion(.success(true))
-               
-            } else {
+               self.updateAuthState(with: .authorized)
+            }
+            
+         } else {
+            DispatchQueue.main.async { [self] in
                completion(.failure(.invalidCredentials))
+               self.updateAuthState(with: .loggedOut)
             }
          }
+         
       } catch {
          completion(.failure(.deniedAccess))
+         authState = .loggedOut
       }
    }
    
-   func updateAppStatus(with authState: AuthState) {
-      self.authState = authState
+   func updateAuthState(with authState: AuthState) {
+      DispatchQueue.main.async {
+         self.authState = authState
+      }
    }
 }
 

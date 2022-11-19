@@ -8,16 +8,21 @@
 import Foundation
 
 class LoginViewModel: ObservableObject {
+   @Published var authentication: UserAppState
    @Published var credentials = Credentials()
    @Published var error: AuthenticationError?
    @Published var storeCredentialsNext = false
    
-   var loginDisabled: Bool {
-      credentials.email.isEmpty || credentials.password.isEmpty
+   init(authentication: UserAppState) {
+      self.authentication = authentication
    }
    
-   func login(completion: @escaping (Bool) -> Void) async {
-      await UserAppState.login(credentials: credentials) { [unowned self] (result:Result<Bool, AuthenticationError>) in
+   var loginDisabled: Bool {
+      credentials.email.isEmpty || credentials.password.isEmpty || authentication.authState.isLoading
+   }
+   
+   func login(completion: ((Bool) -> Void)? = nil) async {
+      await authentication.login(credentials: credentials) { [unowned self] (result: Result<Bool, AuthenticationError>) in
          
          switch result {
             case .success:
@@ -26,11 +31,10 @@ class LoginViewModel: ObservableObject {
                      storeCredentialsNext = false
                   }
                }
-               completion(true)
+               completion?(true)
             case .failure(let authError):
-               credentials = Credentials()
                error = authError
-               completion(false)
+               completion?(false)
          }
       }
    }

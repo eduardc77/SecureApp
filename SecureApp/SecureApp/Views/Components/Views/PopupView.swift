@@ -253,8 +253,8 @@ public struct AlertToast: View {
    
    ///Notification from the top of the View
    public var notification: some View {
-      Group{
-         HStack(spacing: 10) {
+      Group {
+         HStack(spacing: 16) {
             switch type {
                case .complete(let color):
                   Image(systemName: "checkmark.circle.fill")
@@ -279,34 +279,32 @@ public struct AlertToast: View {
             }
             
             if title != nil || subTitle != nil {
-               VStack(alignment: type == .regular ? .center : .leading, spacing: 2) {
-                  if title != nil{
+               VStack {
+                  if title != nil {
                      Text(LocalizedStringKey(title ?? ""))
-                        .font(style?.titleFont ?? Font.body.bold())
-                        .multilineTextAlignment(.center)
+                        .lineLimit(2)
+                        .font(style?.titleFont ?? .callout.weight(.medium))
                         .textColor(style?.titleColor ?? nil)
                   }
                   if subTitle != nil {
                      Text(LocalizedStringKey(subTitle ?? ""))
-                        .font(style?.subTitleFont ?? Font.footnote)
+                        .font(style?.subTitleFont ?? .callout.weight(.medium))
                         .opacity(0.8)
-                        .multilineTextAlignment(.center)
                         .textColor(style?.subtitleColor ?? nil)
                   }
                }
+               .padding(.trailing)
             }
          }
-         .fixedSize(horizontal: true, vertical: false)
-         .padding(.horizontal, 24)
-         .padding(.vertical, 8)
-         .frame(minHeight: 50)
+         
+         .padding(.horizontal)
+         .frame(minWidth: 196, maxHeight: 50)
          .alertBackground(style?.backgroundColor ?? nil)
          .clipShape(Capsule())
-         .overlay(Capsule().stroke(Color.gray.opacity(0.2), lineWidth: 1))
-         .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 6)
-         .compositingGroup()
+         .shadow(radius: 16, x: -3, y: 3)
       }
-      .padding(.top)
+      .padding(.top, 10)
+      .padding(.horizontal, 48)
    }
    
    ///Alert View
@@ -445,7 +443,7 @@ public struct AlertToastModifier: ViewModifier {
                   )
                   .onTapGesture {
                      onTap?()
-                     if tapToDismiss{
+                     if tapToDismiss {
                         withAnimation(Animation.spring()) {
                            self.workItem?.cancel()
                            isPresenting = false
@@ -463,7 +461,7 @@ public struct AlertToastModifier: ViewModifier {
                alert()
                   .onTapGesture {
                      onTap?()
-                     if tapToDismiss{
+                     if tapToDismiss {
                         withAnimation(.spring()) {
                            self.workItem?.cancel()
                            isPresenting = false
@@ -501,8 +499,8 @@ public struct AlertToastModifier: ViewModifier {
             
          case .notification:
             content
-               .overlay(
-                  GeometryReader{ geo -> AnyView in
+               .background(
+                  GeometryReader { geo -> AnyView in
                      let rect = geo.frame(in: .global)
                      
                      if rect.integral != hostRect.integral {
@@ -513,15 +511,16 @@ public struct AlertToastModifier: ViewModifier {
                      
                      return AnyView(EmptyView())
                   }
-                     .overlay(
-                        ZStack {
-                           main()
-                              .offset(y: offsetY)
-                        }
-                           .frame(maxWidth: .infinity, maxHeight: .infinity)
-                           .offset(y: offset)
-                           .animation(.spring(), value: isPresenting))
                )
+               .overlay(
+                  ZStack {
+                     main()
+                        .offset(y: offsetY)
+                  }
+                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                     .offset(y: offset)
+                     .animation(.spring(), value: isPresenting))
+            
             
                .onChange(of: isPresenting) { presented in
                   if presented {
@@ -629,7 +628,7 @@ fileprivate extension Image {
          .renderingMode(.template)
          .resizable()
          .aspectRatio(contentMode: .fit)
-         .frame(maxWidth: 16, maxHeight: 16)
+         .frame(maxWidth: 20, maxHeight: 20)
    }
 }
 

@@ -21,11 +21,11 @@ struct NotesView: View {
             
             Spacer()
          }
-         .toast(isPresenting: $settingsViewModel.copyToClipboard) {
-            AlertToast(displayMode: .notification, type: settingsViewModel.ephemeralClipboard ? .systemImage("timer", .white) : .complete(.white), title: "Copied to clipboard", subTitle: settingsViewModel.ephemeralClipboard ? ("(60sec)") : nil, style: .style(backgroundColor: Color.accentColor, titleColor: .white, subTitleColor: .white, titleFont: .callout))
-            
-         }
          
+         .toast(isPresenting: $settingsViewModel.copyToClipboard) {
+            AlertToast(displayMode: .notification, type: settingsViewModel.ephemeralClipboard ? .systemImage("timer", .white) : .complete(.white), title: "Copied to clipboard", subTitle: settingsViewModel.ephemeralClipboard ? ("(60sec)") : nil, style: .style(backgroundColor: Color.accentColor, titleColor: .white, subTitleColor: .white))
+         }
+      
          .navigationTitle("Notes")
          
          .toolbar {

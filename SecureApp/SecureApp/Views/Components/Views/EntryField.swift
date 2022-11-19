@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EntryField: View {
    @Binding var text: String
-   var sfSymbolName: String
+   var systemName: String
    var placeholder: String
    var prompt: String = ""
    var isSecure = false
@@ -17,7 +17,7 @@ struct EntryField: View {
    var body: some View {
       VStack(alignment: .leading) {
          HStack {
-            Image(systemName: sfSymbolName)
+            Image(systemName: systemName)
                .foregroundColor(.accentColor)
                .frame(width: 20)
             
@@ -44,6 +44,6 @@ struct EntryField: View {
 
 struct EntryField_Previews: PreviewProvider {
    static var previews: some View {
-      EntryField(text: .constant(""),  sfSymbolName: "envelope", placeholder: "Email Address", prompt: "Enter a valid email address")
+      EntryField(text: .constant(""),  systemName: "envelope", placeholder: "Email Address", prompt: "Enter a valid email address")
    }
 }

@@ -29,7 +29,7 @@ final class KeychainService: ObservableObject {
    
    static var biometricType: BiometricType {
       let authContext = LAContext()
-      authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+      authContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
       
       switch authContext.biometryType {
          case .none:
@@ -39,46 +39,57 @@ final class KeychainService: ObservableObject {
          case .faceID:
             return .face
          @unknown default:
-            return .none
+            return .unknown
       }
    }
    
-   func requestBiometricUnlock(completion: @escaping (Result<Credentials, AuthenticationError>) -> Void) {
+   func biometricAuthentication(completion: ((Result<Credentials, AuthenticationError>) -> Void)? = nil) {
       let credentials = KeychainService.getCredentials()
       
       guard let credentials = credentials else {
-         completion(.failure(.credentialsNotSaved))
+         completion?(.failure(.credentialsNotSaved))
          return
       }
+      
       let context = LAContext()
       var error: NSError?
-      let canEvaluate = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+      let reason = "Required for logging in to the app."
       
-      if let error = error {
-         switch error.code {
-            case -6:
-               completion(.failure(.deniedAccess))
-            case -7:
-               completion(.failure(.noBiometricEnrolled))
-            default:
-               completion(.failure(.biometricError))
+      if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
+         
+         if let error = error {
+            switch error.code {
+               case -6:
+                  completion?(.failure(.deniedAccess))
+               case -7:
+                  completion?(.failure(.noBiometricEnrolled))
+               default:
+                  completion?(.failure(.biometricError))
+            }
+            
+            return
          }
          
-         return
-      }
-      
-      guard canEvaluate, context.biometryType != .none else { return }
-      
-      context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Need to access credentials.") { success, error in
-         DispatchQueue.main.async {
-            if error != nil {
-               completion(.failure(.biometricError))
-               
-            } else {
-               completion(.success(credentials))
+         context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, error in
+            DispatchQueue.main.async {
+               if success {
+                  print("Success")
+                  self.appLocked = false
+                  completion?(.success(credentials))
+               } else {
+                  self.appLocked = true
+                  print("Failed to authenticate using Biometrics.")
+                  completion?(.failure(.biometricError))
+               }
             }
          }
+      } else {
+         print("No Device Owner Authentication")
       }
+   }
+   
+   func toggleBiometricAuthentication(_ value: Bool) {
+      biometricUnlockIsActive = value ? true : false
    }
    
    func lockAppInBackground() {
