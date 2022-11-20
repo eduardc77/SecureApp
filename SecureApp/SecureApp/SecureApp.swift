@@ -17,7 +17,7 @@ struct SecureApp: App {
       WindowGroup {
          AppStateSwitcher(settingsViewModel: settingsViewModel)
             .environmentObject(appState)
-				.overlay((settingsViewModel.backgroundPrivacy && !appState.state.isLoading && !appState.appLocked) ? PrivacyView() : nil)
+				.overlay((settingsViewModel.backgroundPrivacy && !appState.state.isLoading && !appState.appLocked) ? LogoView() : nil)
             .accentColor(settingsViewModel.colors[settingsViewModel.accentColorIndex])
       }
       

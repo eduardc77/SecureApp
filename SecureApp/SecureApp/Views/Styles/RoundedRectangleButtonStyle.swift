@@ -21,7 +21,7 @@ struct RoundedRectangleButtonStyle: ButtonStyle {
       Spacer()
     }
 
-    .background(currentBackgroundColor.cornerRadius(6))
+    .background(currentBackgroundColor.cornerRadius(8))
     .buttonStyle(.plain)
     .contentShape(Rectangle())
   }

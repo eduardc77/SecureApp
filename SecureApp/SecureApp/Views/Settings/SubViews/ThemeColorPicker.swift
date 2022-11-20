@@ -17,7 +17,7 @@ struct ThemeColorPicker: View {
                icon: { Image(systemName: "paintpalette").font(.title3) }),
              
              content: {
-         Text("Purple").tag(0)
+         Text("Indigo").tag(0)
          Text("Red").tag(1)
          Text("Blue").tag(2)
          Text("Green").tag(3)

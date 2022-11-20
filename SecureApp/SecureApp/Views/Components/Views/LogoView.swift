@@ -1,5 +1,5 @@
 //
-//  PrivacyView.swift
+//  LogoView.swift
 //  SecureApp
 //
 //  Created by Eduard Caziuc on 17.11.2022.
@@ -7,21 +7,21 @@
 
 import SwiftUI
 
-struct PrivacyView: View {
+struct LogoView: View {
 
    var body: some View {
       ZStack {
          Color.accentColor.ignoresSafeArea()
          
-         Image(systemName: "eye.slash")
+         Image(systemName: "lock.doc.fill")
             .foregroundColor(.white)
-            .font(.system(size: 60))
+            .font(.system(size: 160))
       }
    }
 }
 
-struct PrivacyView_Previews: PreviewProvider {
+struct LogoView_Previews: PreviewProvider {
    static var previews: some View {
-      PrivacyView()
+		LogoView()
    }
 }

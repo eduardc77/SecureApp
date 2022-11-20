@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct LoginView: View {
+	@EnvironmentObject private var appState: UserAppState
    @StateObject var viewModel: LoginViewModel
-   @EnvironmentObject private var appState: UserAppState
-   @State var isLoading: Bool = false
+	@StateObject var settingsViewModel: SettingsViewModel
+   @State private var isLoading: Bool = false
    
 	var body: some View {
 		ZStack {
 			Color(.systemGroupedBackground).ignoresSafeArea()
 
-			VStack(spacing: 16) {
+			VStack(spacing: 20) {
 				EntryField(text: $viewModel.credentials.email, systemName: "envelope", placeholder: "Email Address")
 
 				EntryField(text: $viewModel.credentials.password, systemName: "lock", placeholder: "Password", isSecure: true)
@@ -48,7 +49,7 @@ struct LoginView: View {
 							switch result {
 							case .success(let credentials):
 								viewModel.credentials = credentials
-                        
+								settingsViewModel.biometricUnlockIsActive = true
 								Task {
 									await viewModel.login()
 								}
@@ -108,7 +109,7 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
    static var previews: some View {
-		LoginView(viewModel: LoginViewModel(appState: UserAppState(authService: AuthService())))
+		LoginView(viewModel: LoginViewModel(appState: UserAppState(authService: AuthService())), settingsViewModel: SettingsViewModel())
 			.environmentObject(UserAppState(authService: AuthService()))
    }
 }
