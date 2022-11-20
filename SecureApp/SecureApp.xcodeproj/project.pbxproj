@@ -34,11 +34,11 @@
 		DD59341929268F4F00C79D57 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341829268F4F00C79D57 /* LoginView.swift */; };
 		DD59341B29268F5A00C79D57 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341A29268F5A00C79D57 /* LoginViewModel.swift */; };
 		DD59341D29268FFB00C79D57 /* UserAppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341C29268FFB00C79D57 /* UserAppState.swift */; };
-		DDEF8D8B2927963600642E59 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D8A2927963600642E59 /* BlurView.swift */; };
 		DDEF8D8D2927985100642E59 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D8C2927985100642E59 /* LoadingView.swift */; };
 		DDEF8D902927B1BB00642E59 /* RoundedRectangleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D8F2927B1BB00642E59 /* RoundedRectangleButtonStyle.swift */; };
 		DDEF8D922927D9B500642E59 /* ColorSchemeToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D912927D9B500642E59 /* ColorSchemeToggle.swift */; };
 		EA5FD3AE292973810017849E /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5FD3AD292973810017849E /* Animations.swift */; };
+		EA5FD3B22929A20E0017849E /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5FD3B12929A20E0017849E /* AuthService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,11 +69,11 @@
 		DD59341829268F4F00C79D57 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DD59341A29268F5A00C79D57 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		DD59341C29268FFB00C79D57 /* UserAppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAppState.swift; sourceTree = "<group>"; };
-		DDEF8D8A2927963600642E59 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		DDEF8D8C2927985100642E59 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		DDEF8D8F2927B1BB00642E59 /* RoundedRectangleButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedRectangleButtonStyle.swift; sourceTree = "<group>"; };
 		DDEF8D912927D9B500642E59 /* ColorSchemeToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeToggle.swift; sourceTree = "<group>"; };
 		EA5FD3AD292973810017849E /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
+		EA5FD3B12929A20E0017849E /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +101,6 @@
 			children = (
 				DD5933E329263EF000C79D57 /* AppLockView.swift */,
 				DD5933E129263E0800C79D57 /* PrivacyView.swift */,
-				DDEF8D8A2927963600642E59 /* BlurView.swift */,
 				DDEF8D8C2927985100642E59 /* LoadingView.swift */,
 				DD092E3D2926D9B900FCE0E1 /* EntryField.swift */,
 				DD5934022926574900C79D57 /* PopupView.swift */,
@@ -129,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				DD5933D229263D8B00C79D57 /* SecureApp.swift */,
+				DD59341C29268FFB00C79D57 /* UserAppState.swift */,
 				DD59340B29268E3200C79D57 /* Services */,
 				DD5933E029263DE500C79D57 /* Views */,
 				DD59341429268EC800C79D57 /* Models */,
@@ -153,7 +153,6 @@
 				DD5933F22926449C00C79D57 /* Navigation */,
 				DD5933ED292642D200C79D57 /* Onboarding */,
 				DD59341729268F3800C79D57 /* Login */,
-				DD59340429265E4300C79D57 /* Notes */,
 				DD5933E82926404100C79D57 /* Settings */,
 				DD092E3C2926D99400FCE0E1 /* Components */,
 				DDEF8D8E2927B19D00642E59 /* Styles */,
@@ -223,7 +222,7 @@
 			isa = PBXGroup;
 			children = (
 				DD59341029268E9200C79D57 /* KeychainService.swift */,
-				DD59341C29268FFB00C79D57 /* UserAppState.swift */,
+				EA5FD3B12929A20E0017849E /* AuthService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -241,6 +240,7 @@
 			children = (
 				DD59341829268F4F00C79D57 /* LoginView.swift */,
 				DD59341A29268F5A00C79D57 /* LoginViewModel.swift */,
+				DD59340429265E4300C79D57 /* Notes */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -331,6 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD59341B29268F5A00C79D57 /* LoginViewModel.swift in Sources */,
+				EA5FD3B22929A20E0017849E /* AuthService.swift in Sources */,
 				DD092E3E2926D9B900FCE0E1 /* EntryField.swift in Sources */,
 				DD5933F6292645A100C79D57 /* AppTabView.swift in Sources */,
 				DD5933EC2926419200C79D57 /* SettingsView.swift in Sources */,
@@ -344,7 +345,6 @@
 				DD59341929268F4F00C79D57 /* LoginView.swift in Sources */,
 				DDEF8D8D2927985100642E59 /* LoadingView.swift in Sources */,
 				DD5933F12926432900C79D57 /* OnboardingCell.swift in Sources */,
-				DDEF8D8B2927963600642E59 /* BlurView.swift in Sources */,
 				DD5933FB292646DB00C79D57 /* PrivacyModeToggle.swift in Sources */,
 				EA5FD3AE292973810017849E /* Animations.swift in Sources */,
 				DDEF8D922927D9B500642E59 /* ColorSchemeToggle.swift in Sources */,
@@ -487,7 +487,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SecureApp/Preview Content\"";
-				DEVELOPMENT_TEAM = ZU8DL4JP3R;
+				DEVELOPMENT_TEAM = 3MF3PWAV8V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "";
@@ -503,7 +503,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.teameduard.SecureApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamgarfield.SecureApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -519,7 +519,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SecureApp/Preview Content\"";
-				DEVELOPMENT_TEAM = ZU8DL4JP3R;
+				DEVELOPMENT_TEAM = 3MF3PWAV8V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "";
@@ -535,7 +535,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.teameduard.SecureApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamgarfield.SecureApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

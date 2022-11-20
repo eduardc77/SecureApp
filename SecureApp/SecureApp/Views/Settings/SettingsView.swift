@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-   @EnvironmentObject private var keychainService: KeychainService
-   @EnvironmentObject private var authentication: UserAppState
+   @EnvironmentObject private var appState: UserAppState
    @ObservedObject var settingsViewModel: SettingsViewModel
    @Environment(\.colorScheme) private var colorScheme
    
@@ -19,9 +18,9 @@ struct SettingsView: View {
             List {
                Section(header: Text("Security")) {
 
-                  UnlockMethodToggle()
+						UnlockMethodToggle(viewModel: settingsViewModel)
                   
-                  if keychainService.biometricUnlockIsActive {
+                  if settingsViewModel.biometricUnlockIsActive {
                      LockTimerPicker()
                   }
                   
@@ -43,7 +42,7 @@ struct SettingsView: View {
                   Button(action: {
                      withAnimation {
                         DispatchQueue.main.async {
-                           authentication.updateAuthState(with: .loggedOut)
+                           appState.updateAuthState(with: .loggedOut)
                         }
                      }
                   }, label: {
@@ -76,7 +75,7 @@ struct SettingsView: View {
 struct SettingsView_Previews: PreviewProvider {
    static var previews: some View {
       SettingsView(settingsViewModel: SettingsViewModel())
-			 .environmentObject(UserAppState())
+			.environmentObject(UserAppState(authService: AuthService()))
 			 .environmentObject(KeychainService())
    }
 }

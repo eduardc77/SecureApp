@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct UnlockMethodToggle: View {
-   @EnvironmentObject private var keychainService: KeychainService
+	@EnvironmentObject private var appState: UserAppState
+   @ObservedObject var viewModel: SettingsViewModel
    
    var body: some View {
-      Toggle(isOn: $keychainService.biometricUnlockIsActive,
+      Toggle(isOn: $viewModel.biometricUnlockIsActive,
              label: {
          
          Label(title: {
-            switch KeychainService.biometricType {
+            switch UserAppState.biometricType {
                case .none:
                   Text("Unlock with device passcode")
                case .touch:
@@ -27,7 +28,7 @@ struct UnlockMethodToggle: View {
             }
          }, icon: {
             Group {
-               switch KeychainService.biometricType {
+               switch UserAppState.biometricType {
                   case .none:
                      Image(systemName: "key.viewfinder")
                   case .touch:
@@ -43,19 +44,19 @@ struct UnlockMethodToggle: View {
       })
       .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
       
-      .onChange(of: keychainService.biometricUnlockIsActive, perform: { unlockMethodIsActive in
+      .onChange(of: viewModel.biometricUnlockIsActive, perform: { unlockMethodIsActive in
          
          if unlockMethodIsActive {
-            keychainService.biometricAuthentication { result in
+				appState.biometricAuthentication { result in
                switch result {
                   case .success:
-                     keychainService.toggleBiometricAuthentication(true)
+						viewModel.biometricUnlockIsActive = true
                   case .failure:
-                     keychainService.toggleBiometricAuthentication(false)
+						viewModel.biometricUnlockIsActive = false
                }
             }
          } else {
-            keychainService.biometricUnlockIsActive = false
+				viewModel.biometricUnlockIsActive = false
          }
       })
    }
@@ -63,6 +64,6 @@ struct UnlockMethodToggle: View {
 
 struct UnlockMethodToggle_Previews: PreviewProvider {
    static var previews: some View {
-      UnlockMethodToggle()
+		UnlockMethodToggle(viewModel: SettingsViewModel())
    }
 }

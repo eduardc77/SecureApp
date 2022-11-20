@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct LockTimerPicker: View {
-   @EnvironmentObject private var keychainService: KeychainService
+   @EnvironmentObject var appState: UserAppState
    
    var body: some View {
-      Picker(selection: $keychainService.autoLockIndex,
+      Picker(selection: $appState.autoLockIndex,
              label: Label(
                title: { Text("Lock automatically") },
                icon: { Image(systemName: "lock").font(.title2) }),
@@ -29,6 +29,6 @@ struct LockTimerPicker: View {
 struct LockTimerPicker_Previews: PreviewProvider {
    static var previews: some View {
       LockTimerPicker()
-         .environmentObject(KeychainService())
+         .environmentObject(UserAppState(authService: AuthService()))
    }
 }

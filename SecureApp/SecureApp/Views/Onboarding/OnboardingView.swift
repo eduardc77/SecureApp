@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OnboardingView: View {
-   @EnvironmentObject private var keychainService: KeychainService
+   @EnvironmentObject private var appState: UserAppState
    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
    @Environment(\.colorScheme) private var colorScheme
    
@@ -46,7 +46,7 @@ struct OnboardingView: View {
          
          Button(action: {
             presentationMode.wrappedValue.dismiss()
-            keychainService.isFirstLaunch = false
+            appState.isFirstLaunch = false
          },
                 label: {
             HStack {

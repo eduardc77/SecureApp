@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct LoginView: View {
-   @EnvironmentObject private var keychainService: KeychainService
    @StateObject var viewModel: LoginViewModel
-   @EnvironmentObject private var authentication: UserAppState
+   @EnvironmentObject private var appState: UserAppState
    @State var isLoading: Bool = false
    
 	var body: some View {
@@ -40,22 +39,22 @@ struct LoginView: View {
 				.buttonStyle(.mainButtonStyle())
 				.disabled(viewModel.loginDisabled)
 
-				if KeychainService.biometricType != .none {
+				if UserAppState.biometricType != .none {
 					Button {
 						UIApplication.shared.endEditing()
-						authentication.updateAuthState(with: .authenticating)
+						appState.updateAuthState(with: .authenticating)
 
-						keychainService.biometricAuthentication { (result: Result<Credentials, AuthenticationError>) in
+						appState.biometricAuthentication { (result: Result<Credentials, AuthenticationError>) in
 							switch result {
 							case .success(let credentials):
 								viewModel.credentials = credentials
-
+                        
 								Task {
 									await viewModel.login()
 								}
 							case .failure(let error):
 								viewModel.error = error
-								authentication.updateAuthState(with: .loggedOut)
+								appState.updateAuthState(with: .loggedOut)
 							}
 						}
 
@@ -95,12 +94,12 @@ struct LoginView: View {
 					viewModel.credentials = credentials
 				}
 			}
-			.onChange(of: authentication.authState) { status in
+			.onChange(of: appState.state) { status in
 				isLoading = status.isLoading ? true : false
 			}
 
 			.toast(isPresenting: $isLoading) {
-				AlertToast(displayMode: .alert, type: .loading, title: authentication.authState.title)
+				AlertToast(displayMode: .alert, type: .loading, title: appState.state.title)
 			}
 		}
 	}
@@ -109,7 +108,7 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
    static var previews: some View {
-      LoginView(viewModel: LoginViewModel(authentication: UserAppState()))
-         .environmentObject(UserAppState())
+		LoginView(viewModel: LoginViewModel(appState: UserAppState(authService: AuthService())))
+			.environmentObject(UserAppState(authService: AuthService()))
    }
 }

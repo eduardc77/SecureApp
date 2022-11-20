@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct AppLockView: View {
-   @EnvironmentObject var authentication: UserAppState
-   @EnvironmentObject var keychainService: KeychainService
+   @EnvironmentObject var appState: UserAppState
+	@ObservedObject var viewModel: SettingsViewModel
+
    @State private var scale: CGFloat = 1
-   @ObservedObject var viewModel: SettingsViewModel
    @State private var animate = false
+
    
    var body: some View {
       NavigationView {
@@ -21,7 +22,7 @@ struct AppLockView: View {
                .ignoresSafeArea()
 
             VStack {
-							Image(systemName: keychainService.appLocked ? "lock.fill" : "lock.open.fill")
+							Image(systemName: appState.appLocked ? "lock.fill" : "lock.open.fill")
                   .resizable()
                   .scaledToFit()
                   .frame(maxWidth: 100, maxHeight: 100)
@@ -35,7 +36,7 @@ struct AppLockView: View {
                
                VStack {
                   Button(action: {
-                     keychainService.biometricAuthentication()
+							appState.biometricAuthentication()
                   }, label: {
                      
                      Label(
@@ -50,21 +51,20 @@ struct AppLockView: View {
                .padding()
             }
          }
-         .transition(.identity)
-         
+
          .onAppear {
-            if keychainService.biometricUnlockIsActive {
-               keychainService.biometricAuthentication()
+            if viewModel.biometricUnlockIsActive {
+					appState.biometricAuthentication()
             } else {
-               keychainService.appLocked = false
+					appState.appLocked = false
             }
          }
          
          .toolbar {
             Button {
                DispatchQueue.main.async {
-                  authentication.updateAuthState(with: .loggedOut)
-                  keychainService.appLocked = false
+						appState.updateAuthState(with: .loggedOut)
+						appState.appLocked = false
                }
 
             } label: {
@@ -79,7 +79,7 @@ struct AppLockView: View {
 struct LoggingView_Previews: PreviewProvider {
    static var previews: some View {
       AppLockView(viewModel: SettingsViewModel())
-			 .environmentObject(UserAppState())
+			.environmentObject(UserAppState(authService: AuthService()))
 			 .environmentObject(KeychainService())
    }
 }

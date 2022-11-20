@@ -9,42 +9,42 @@ import SwiftUI
 
 @main
 struct SecureApp: App {
-   @StateObject private var authentication = UserAppState()
-   @StateObject private var keychainService = KeychainService()
+	@StateObject private var appState = UserAppState(authService: AuthService())
    @StateObject private var settingsViewModel = SettingsViewModel()
    @Environment(\.scenePhase) private var scenePhase
-   
-   
+
    var body: some Scene {
       WindowGroup {
          AppStateSwitcher(settingsViewModel: settingsViewModel)
-            .environmentObject(authentication)
-            .environmentObject(keychainService)
-
-            .overlay((settingsViewModel.backgroundPrivacy && !authentication.authState.isLoading && !keychainService.appLocked) ? PrivacyView() : nil)
-      
+            .environmentObject(appState)
+				.overlay((settingsViewModel.backgroundPrivacy && !appState.state.isLoading && !appState.appLocked) ? PrivacyView() : nil)
             .accentColor(settingsViewModel.colors[settingsViewModel.accentColorIndex])
       }
       
       .onChange(of: scenePhase) { newPhase in
          if newPhase == .inactive {
-            if settingsViewModel.privacyMode, !keychainService.appLocked, !authentication.authState.isLoading {
+            if settingsViewModel.privacyMode, !appState.appLocked, !appState.state.isLoading {
                settingsViewModel.backgroundPrivacy = true
             }
          }
          
-         else if newPhase == .active {
-            if settingsViewModel.privacyMode {
-               settingsViewModel.backgroundPrivacy = false
-            }
-            keychainService.lockAppTimerIsRunning = false
-         }
+
          
          else if newPhase == .background {
-            if keychainService.biometricUnlockIsActive, authentication.authState == .authorized {
-               keychainService.lockAppInBackground()
+				if settingsViewModel.privacyMode {
+					settingsViewModel.backgroundPrivacy = false
+				}
+				if settingsViewModel.biometricUnlockIsActive, appState.state == .authorized {
+					appState.lockAppInBackground()
             }
          }
+
+			else if newPhase == .active {
+				if settingsViewModel.privacyMode {
+					settingsViewModel.backgroundPrivacy = false
+				}
+				appState.lockAppTimerIsRunning = false
+			}
       }
    }
 }

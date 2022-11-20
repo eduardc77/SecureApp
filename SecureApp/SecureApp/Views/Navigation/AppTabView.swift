@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AppTabView: View {
-   @EnvironmentObject private var keychainService: KeychainService
    @ObservedObject var settingsViewModel: SettingsViewModel
    
    var body: some View {
