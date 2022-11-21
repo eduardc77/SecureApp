@@ -10,7 +10,7 @@ import SwiftKeychainWrapper
 
 final class KeychainService: ObservableObject {
 	static let credentialsStorageKey = "credentials"
-
+	
 	static func getCredentials() -> Credentials? {
 		guard let myCredentialsString = KeychainWrapper.standard.string(forKey: credentialsStorageKey) else { return nil }
 		
@@ -18,7 +18,7 @@ final class KeychainService: ObservableObject {
 	}
 	
 	static func saveCredentials(_ credentials: Credentials) -> Bool {
-		guard KeychainWrapper.standard.set(credentials.encoded(), forKey: Self.credentialsStorageKey) else {return false }
+		guard KeychainWrapper.standard.set(credentials.encoded(), forKey: Self.credentialsStorageKey) else { return false }
 		
 		return true
 	}

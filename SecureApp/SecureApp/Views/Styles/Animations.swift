@@ -8,11 +8,11 @@
 import SwiftUI
 
 extension View {
-	 func animateForever(using animation: Animation = Animation.easeInOut(duration: 1.6), autoreverses: Bool = true, _ action: @escaping () -> Void) -> some View {
-			return onAppear {
-				 withAnimation(animation.repeatForever(autoreverses: autoreverses)) {
-						action()
-				 }
+	func animateForever(using animation: Animation = Animation.easeInOut(duration: 1.6), autoreverses: Bool = true, _ action: @escaping () -> Void) -> some View {
+		return onAppear {
+			withAnimation(animation.repeatForever(autoreverses: autoreverses)) {
+				action()
 			}
-	 }
+		}
+	}
 }

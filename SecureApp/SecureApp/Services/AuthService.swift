@@ -6,34 +6,40 @@
 //
 
 import Foundation
+import Combine
 
 class AuthService: ObservableObject {
 	// MARK: - Properties
-
-	@Published private(set) var authState: AuthState = .loggedOut
-
+	
+	@Published private(set) var authState = CurrentValueSubject<AuthState, Never>(.loggedOut)
+	
+	var authStatePublisher: AnyPublisher<AuthState, Never> {
+		authState.eraseToAnyPublisher()
+	}
+	
 	// MARK: - Public Methods
-
+	
 	func login(credentials: Credentials, completion: ((Result<Bool, AuthenticationError>) -> Void)? = nil) async {
-		authState = .authenticating
-
+		authState.send(.authenticating)
+		
 		do {
 			try await Task.sleep(nanoseconds:  2_000_000_000)
-
+			
 			if credentials.password == "password" {
-				authState = .authorizing
+				authState.send(.authorizing)
 				try await Task.sleep(nanoseconds:  2_600_000_000)
-				authState = .authorized
+				authState.send(.authorized)
 				completion?(.success(true))
 			} else {
-				authState = .loggedOut
+				authState.send(.loggedOut)
 				completion?(.failure(.invalidCredentials))
 			}
 		} catch {
 			completion?(.failure(.deniedAccess))
-			authState = .loggedOut
+			authState.send(.loggedOut)
 		}
 	}
+	
 }
 
 enum AuthState: Comparable {
@@ -42,11 +48,11 @@ enum AuthState: Comparable {
 	case authenticated
 	case authorizing
 	case authorized
-
+	
 	var isLoading: Bool {
 		return self == .authenticating || self == .authorizing
 	}
-
+	
 	var title: String {
 		switch self {
 		case .loggedOut:
@@ -69,11 +75,11 @@ enum AuthenticationError: Error, LocalizedError, Identifiable {
 	case noBiometricEnrolled
 	case biometricError
 	case credentialsNotSaved
-
+	
 	var id: String {
 		self.localizedDescription
 	}
-
+	
 	var errorDescription: String? {
 		switch self {
 		case .invalidCredentials:

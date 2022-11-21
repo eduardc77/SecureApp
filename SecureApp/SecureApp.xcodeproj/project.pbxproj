@@ -35,12 +35,14 @@
 		DD59341B29268F5A00C79D57 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341A29268F5A00C79D57 /* LoginViewModel.swift */; };
 		DD59341D29268FFB00C79D57 /* UserAppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341C29268FFB00C79D57 /* UserAppState.swift */; };
 		DDEF8D8D2927985100642E59 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D8C2927985100642E59 /* LoadingView.swift */; };
-		DDEF8D902927B1BB00642E59 /* RoundedRectangleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D8F2927B1BB00642E59 /* RoundedRectangleButtonStyle.swift */; };
+		DDEF8D902927B1BB00642E59 /* MainButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D8F2927B1BB00642E59 /* MainButtonStyle.swift */; };
 		DDEF8D922927D9B500642E59 /* ColorSchemeToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D912927D9B500642E59 /* ColorSchemeToggle.swift */; };
 		EA5FD3AE292973810017849E /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5FD3AD292973810017849E /* Animations.swift */; };
 		EA5FD3B22929A20E0017849E /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5FD3B12929A20E0017849E /* AuthService.swift */; };
 		EAE90A7A292AB7600009E345 /* OnboardingItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE90A79292AB7600009E345 /* OnboardingItemModel.swift */; };
 		EAE90A7C292AB7760009E345 /* OnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE90A7B292AB7760009E345 /* OnboardingPageView.swift */; };
+		EAE90A7F292ADF800009E345 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE90A7E292ADF800009E345 /* BlurView.swift */; };
+		EAE90A81292AF6AC0009E345 /* Color+Extennsion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE90A80292AF6AC0009E345 /* Color+Extennsion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,12 +74,14 @@
 		DD59341A29268F5A00C79D57 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		DD59341C29268FFB00C79D57 /* UserAppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAppState.swift; sourceTree = "<group>"; };
 		DDEF8D8C2927985100642E59 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
-		DDEF8D8F2927B1BB00642E59 /* RoundedRectangleButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedRectangleButtonStyle.swift; sourceTree = "<group>"; };
+		DDEF8D8F2927B1BB00642E59 /* MainButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButtonStyle.swift; sourceTree = "<group>"; };
 		DDEF8D912927D9B500642E59 /* ColorSchemeToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeToggle.swift; sourceTree = "<group>"; };
 		EA5FD3AD292973810017849E /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		EA5FD3B12929A20E0017849E /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		EAE90A79292AB7600009E345 /* OnboardingItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemModel.swift; sourceTree = "<group>"; };
 		EAE90A7B292AB7760009E345 /* OnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageView.swift; sourceTree = "<group>"; };
+		EAE90A7E292ADF800009E345 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		EAE90A80292AF6AC0009E345 /* Color+Extennsion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extennsion.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +109,7 @@
 			children = (
 				DD5933E329263EF000C79D57 /* AppLockView.swift */,
 				DD5933E129263E0800C79D57 /* LogoView.swift */,
+				EAE90A7E292ADF800009E345 /* BlurView.swift */,
 				DDEF8D8C2927985100642E59 /* LoadingView.swift */,
 				DD092E3D2926D9B900FCE0E1 /* EntryField.swift */,
 				DD5934022926574900C79D57 /* PopupView.swift */,
@@ -168,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				DD5933E62926401D00C79D57 /* String+Extension.swift */,
+				EAE90A80292AF6AC0009E345 /* Color+Extennsion.swift */,
 				DD59340E29268E7200C79D57 /* UIApplication+Extension.swift */,
 			);
 			path = Extensions;
@@ -226,8 +232,8 @@
 		DD59340B29268E3200C79D57 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				DD59341029268E9200C79D57 /* KeychainService.swift */,
 				EA5FD3B12929A20E0017849E /* AuthService.swift */,
+				DD59341029268E9200C79D57 /* KeychainService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -253,7 +259,7 @@
 		DDEF8D8E2927B19D00642E59 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
-				DDEF8D8F2927B1BB00642E59 /* RoundedRectangleButtonStyle.swift */,
+				DDEF8D8F2927B1BB00642E59 /* MainButtonStyle.swift */,
 				EA5FD3AD292973810017849E /* Animations.swift */,
 			);
 			path = Styles;
@@ -346,12 +352,13 @@
 			files = (
 				DD59341B29268F5A00C79D57 /* LoginViewModel.swift in Sources */,
 				EA5FD3B22929A20E0017849E /* AuthService.swift in Sources */,
+				EAE90A81292AF6AC0009E345 /* Color+Extennsion.swift in Sources */,
 				DD092E3E2926D9B900FCE0E1 /* EntryField.swift in Sources */,
 				DD5933F6292645A100C79D57 /* AppTabView.swift in Sources */,
 				DD5933EC2926419200C79D57 /* SettingsView.swift in Sources */,
 				DD593401292648DB00C79D57 /* ThemeColorPicker.swift in Sources */,
 				DD59341629268ED400C79D57 /* Credentials.swift in Sources */,
-				DDEF8D902927B1BB00642E59 /* RoundedRectangleButtonStyle.swift in Sources */,
+				DDEF8D902927B1BB00642E59 /* MainButtonStyle.swift in Sources */,
 				DD5933F9292646C100C79D57 /* UnlockMethodToggle.swift in Sources */,
 				DD5933D329263D8B00C79D57 /* SecureApp.swift in Sources */,
 				DD5933E72926401D00C79D57 /* String+Extension.swift in Sources */,
@@ -369,6 +376,7 @@
 				DD59340629265E5A00C79D57 /* NotesView.swift in Sources */,
 				DD5933FD292646F100C79D57 /* EphemeralClipboardToggle.swift in Sources */,
 				DD59340F29268E7200C79D57 /* UIApplication+Extension.swift in Sources */,
+				EAE90A7F292ADF800009E345 /* BlurView.swift in Sources */,
 				DD5933E229263E0800C79D57 /* LogoView.swift in Sources */,
 				DD5933F4292644FA00C79D57 /* AppStateSwitcher.swift in Sources */,
 				DD5933FF2926472600C79D57 /* LockTimerPicker.swift in Sources */,
@@ -503,7 +511,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SecureApp/Preview Content\"";
-				DEVELOPMENT_TEAM = ZU8DL4JP3R;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "";
@@ -519,7 +527,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.teameduard.SecureApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.team.SecureApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -535,7 +543,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SecureApp/Preview Content\"";
-				DEVELOPMENT_TEAM = ZU8DL4JP3R;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "";
@@ -551,7 +559,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.teameduard.SecureApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.team.SecureApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

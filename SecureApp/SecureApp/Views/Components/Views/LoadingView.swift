@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct LoadingView: View {
-   var body: some View {
-      
-      ProgressView()
-         .foregroundColor(.white)
-         .progressViewStyle(.circular)
-         .ignoresSafeArea()
-   }
+	var body: some View {
+		
+		ProgressView()
+			.foregroundColor(.white)
+			.progressViewStyle(.circular)
+			.ignoresSafeArea()
+	}
 }
 
 // MARK: - Previews
 
 struct LoadingView_Previews: PreviewProvider {
-   static var previews: some View {
-      LoadingView()
-   }
+	static var previews: some View {
+		LoadingView()
+	}
 }

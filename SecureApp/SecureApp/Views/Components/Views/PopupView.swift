@@ -8,76 +8,10 @@
 import SwiftUI
 import Combine
 
-fileprivate struct AnimatedCheckmark: View {
-	var color: Color = .black
-	var size: Int = 50
+public struct PopupView: View {
 	
-	var height: CGFloat {
-		return CGFloat(size)
-	}
+	// MARK: - Types
 	
-	var width: CGFloat {
-		return CGFloat(size)
-	}
-	
-	@State private var percentage: CGFloat = .zero
-	
-	var body: some View {
-		Path { path in
-			path.move(to: CGPoint(x: 0, y: height / 2))
-			path.addLine(to: CGPoint(x: width / 2.5, y: height))
-			path.addLine(to: CGPoint(x: width, y: 0))
-		}
-		.trim(from: 0, to: percentage)
-		.stroke(color, style: StrokeStyle(lineWidth: CGFloat(size / 8), lineCap: .round, lineJoin: .round))
-		.animation(Animation.spring().speed(0.75).delay(0.25), value: percentage)
-		.frame(width: width, height: height, alignment: .center)
-		
-		.onAppear {
-			percentage = 1.0
-		}
-	}
-}
-
-fileprivate struct AnimatedXMark: View {
-	var color: Color = .black
-	var size: Int = 50
-	
-	var height: CGFloat {
-		return CGFloat(size)
-	}
-	
-	var width: CGFloat {
-		return CGFloat(size)
-	}
-	
-	var rect: CGRect {
-		return CGRect(x: 0, y: 0, width: size, height: size)
-	}
-	
-	@State private var percentage: CGFloat = .zero
-	
-	var body: some View {
-		Path { path in
-			path.move(to: CGPoint(x: rect.minX, y: rect.minY))
-			path.addLine(to: CGPoint(x: rect.maxY, y: rect.maxY))
-			path.move(to: CGPoint(x: rect.maxX, y: rect.minY))
-			path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-		}
-		.trim(from: 0, to: percentage)
-		.stroke(color, style: StrokeStyle(lineWidth: CGFloat(size / 8), lineCap: .round, lineJoin: .round))
-		.animation(Animation.spring().speed(0.75).delay(0.25), value: percentage)
-		.frame(width: width, height: height, alignment: .center)
-		
-		.onAppear {
-			percentage = 1.0
-		}
-	}
-}
-
-//MARK: - Main View
-
-public struct AlertToast: View {
 	public enum BannerAnimation {
 		case slide, pop
 	}
@@ -99,16 +33,16 @@ public struct AlertToast: View {
 	public enum AlertType: Equatable {
 		
 		///Animated checkmark
-		case complete(_ color: Color)
+		case complete(_ color: Color = .green)
 		
 		///Animated xMark
-		case error(_ color: Color)
+		case error(_ color: Color = .red)
 		
 		///System image from `SFSymbols`
-		case systemImage(_ name: String, _ color: Color)
+		case systemImage(_ name: String, _ color: Color = .secondary)
 		
 		///Image from Assets
-		case image(_ name: String, _ color: Color)
+		case image(_ name: String, _ color: Color = .secondary)
 		
 		///Loading indicator (Circular)
 		case loading
@@ -161,6 +95,8 @@ public struct AlertToast: View {
 		}
 	}
 	
+	// MARK: - Properties
+	
 	///The display mode
 	/// - `alert`
 	/// - `hud`
@@ -185,7 +121,7 @@ public struct AlertToast: View {
 					type: AlertType,
 					title: String? = nil,
 					subTitle: String? = nil,
-					style: AlertStyle? = nil){
+					style: AlertStyle? = nil) {
 		
 		self.displayMode = displayMode
 		self.type = type
@@ -279,31 +215,33 @@ public struct AlertToast: View {
 				}
 				
 				if title != nil || subTitle != nil {
-					VStack {
+					VStack(spacing: 2) {
 						if title != nil {
 							Text(LocalizedStringKey(title ?? ""))
 								.lineLimit(2)
-								.font(style?.titleFont ?? .callout.weight(.medium))
-								.textColor(style?.titleColor ?? nil)
+								.multilineTextAlignment(.center)
+								.font(style?.titleFont ?? .headline.weight(.semibold))
+								.textColor(style?.titleColor ?? .secondary)
 						}
 						if subTitle != nil {
 							Text(LocalizedStringKey(subTitle ?? ""))
-								.font(style?.subTitleFont ?? .callout.weight(.medium))
+								.lineLimit(1)
+								.font(style?.subTitleFont ?? .subheadline.weight(.semibold))
+								.textColor(style?.subtitleColor ?? Color.lightGray)
 								.opacity(0.8)
-								.textColor(style?.subtitleColor ?? nil)
 						}
 					}
 					.padding(.trailing)
+					.padding(.vertical, 8)
 				}
 			}
-			
 			.padding(.horizontal)
-			.frame(minWidth: 196, maxHeight: 50)
+			.frame(minWidth: 196, minHeight: 50)
 			.alertBackground(style?.backgroundColor ?? nil)
 			.clipShape(Capsule())
 			.shadow(radius: 16, x: 2, y: 2)
 		}
-		.padding(.top, 10)
+		.padding(.top, 12)
 		.padding(.horizontal, 48)
 	}
 	
@@ -313,10 +251,10 @@ public struct AlertToast: View {
 			switch type {
 			case .complete(let color):
 				AnimatedCheckmark(color: color, size: title != nil ? 32 : 56)
-
+				
 			case .error(let color):
 				AnimatedXMark(color: color, size: title != nil ? 32 : 56)
-				
+
 			case .systemImage(let name, let color):
 				Image(systemName: name)
 					.renderingMode(.template)
@@ -325,7 +263,7 @@ public struct AlertToast: View {
 					.scaledToFit()
 					.foregroundColor(color)
 					.padding(.bottom)
-				
+
 			case .image(let name, let color):
 				Image(name)
 					.resizable()
@@ -356,7 +294,7 @@ public struct AlertToast: View {
 						.textColor(style?.subtitleColor ?? nil)
 				}
 			}
-
+			
 		}
 		.padding(40)
 		.withFrame(type != .regular && type != .loading && title == nil)
@@ -376,12 +314,14 @@ public struct AlertToast: View {
 	}
 }
 
-public struct AlertToastModifier: ViewModifier {
+// MARK: - Modifiers
+
+public struct PopupModifier: ViewModifier {
 	@Binding var isPresenting: Bool
 	@State var duration: Double = 2
 	@State var tapToDismiss: Bool = true
 	var offsetY: CGFloat = 0
-	var alert: () -> AlertToast
+	var alert: () -> PopupView
 	var onTap: (() -> ())? = nil
 	var completion: (() -> ())? = nil
 	
@@ -403,22 +343,25 @@ public struct AlertToastModifier: ViewModifier {
 			
 			switch alert().displayMode {
 			case .alert:
-				alert()
-					.onTapGesture {
-						onTap?()
-						if tapToDismiss {
-							withAnimation(.spring()) {
-								self.workItem?.cancel()
-								isPresenting = false
-								self.workItem = nil
+				ZStack {
+					BlurView().opacity(0.8).ignoresSafeArea()
+					
+					alert()
+						.onTapGesture {
+							onTap?()
+							if tapToDismiss {
+								withAnimation(.spring()) {
+									self.workItem?.cancel()
+									isPresenting = false
+									self.workItem = nil
+								}
 							}
 						}
-					}
-					.onDisappear(perform: {
-						completion?()
-					})
-				
-					.transition(.scale(scale: 0.8).combined(with: .opacity))
+						.onDisappear(perform: {
+							completion?()
+						})
+						.transition(.scale(scale: 0.8).combined(with: .opacity))
+				}
 				
 			case .notification:
 				alert()
@@ -447,7 +390,6 @@ public struct AlertToastModifier: ViewModifier {
 					.onDisappear(perform: {
 						completion?()
 					})
-				
 					.transition(.move(edge: .top).combined(with: .opacity))
 				
 			case .banner:
@@ -465,7 +407,6 @@ public struct AlertToastModifier: ViewModifier {
 					.onDisappear(perform: {
 						completion?()
 					})
-				
 					.transition(alert().displayMode == .banner(.slide) ? .slide.combined(with: .opacity) : .move(edge: .bottom))
 			}
 		}
@@ -473,7 +414,6 @@ public struct AlertToastModifier: ViewModifier {
 	
 	@ViewBuilder
 	public func body(content: Content) -> some View {
-		
 		switch alert().displayMode {
 		case .banner:
 			content
@@ -489,7 +429,6 @@ public struct AlertToastModifier: ViewModifier {
 						onAppearAction()
 					}
 				}
-			
 		case .notification:
 			content
 				.background(
@@ -501,7 +440,6 @@ public struct AlertToastModifier: ViewModifier {
 								self.hostRect = rect
 							}
 						}
-						
 						return AnyView(EmptyView())
 					}
 				)
@@ -513,14 +451,12 @@ public struct AlertToastModifier: ViewModifier {
 						.frame(maxWidth: .infinity, maxHeight: .infinity)
 						.offset(y: offset)
 						.animation(.spring(), value: isPresenting))
-			
-			
+
 				.onChange(of: isPresenting) { presented in
 					if presented {
 						onAppearAction()
 					}
 				}
-			
 		case .alert:
 			content
 				.overlay(
@@ -530,7 +466,7 @@ public struct AlertToastModifier: ViewModifier {
 					}
 						.frame(maxWidth: screen.width, maxHeight: screen.height)
 						.ignoresSafeArea()
-						.animation(Animation.spring(), value: isPresenting))
+						.animation(.spring(), value: isPresenting))
 			
 				.onChange(of: isPresenting) { presented in
 					if presented {
@@ -549,10 +485,8 @@ public struct AlertToastModifier: ViewModifier {
 			duration = 0
 			tapToDismiss = false
 		}
-		
 		if duration > 0 {
 			workItem?.cancel()
-			
 			let task = DispatchWorkItem {
 				withAnimation(.spring()) {
 					isPresenting = false
@@ -567,9 +501,7 @@ public struct AlertToastModifier: ViewModifier {
 
 ///View Modifier for dynamic frame when alert type is `.regular` / `.loading`
 fileprivate struct WithFrameModifier: ViewModifier {
-	
 	var withFrame: Bool
-	
 	var maxWidth: CGFloat = 175
 	var maxHeight: CGFloat = 175
 	
@@ -595,7 +527,7 @@ fileprivate struct BackgroundModifier: ViewModifier {
 				.background(color)
 		} else {
 			content
-				.background(Color(.systemGray6))
+				.background(Color.gray6)
 		}
 	}
 }
@@ -634,13 +566,13 @@ public extension View {
 		modifier(WithFrameModifier(withFrame: withFrame))
 	}
 	
-	/// Present `AlertToast`.
+	/// Present `PopupView`.
 	/// - Parameters:
 	///   - isPresenting: Binding<Bool>
-	///   - alert: () -> AlertToast
-	/// - Returns: `AlertToast`
-	func toast(isPresenting: Binding<Bool>, duration: Double = 2, tapToDismiss: Bool = true, offsetY: CGFloat = 0, alert: @escaping () -> AlertToast, onTap: (() -> ())? = nil, completion: (() -> ())? = nil) -> some View {
-		modifier(AlertToastModifier(isPresenting: isPresenting, duration: duration, tapToDismiss: tapToDismiss, offsetY: offsetY, alert: alert, onTap: onTap, completion: completion))
+	///   - alert: () -> PopupView
+	/// - Returns: `PopupView`
+	func popup(isPresenting: Binding<Bool>, duration: Double = 2, tapToDismiss: Bool = true, offsetY: CGFloat = 0, alert: @escaping () -> PopupView, onTap: (() -> ())? = nil, completion: (() -> ())? = nil) -> some View {
+		modifier(PopupModifier(isPresenting: isPresenting, duration: duration, tapToDismiss: tapToDismiss, offsetY: offsetY, alert: alert, onTap: onTap, completion: completion))
 	}
 	
 	/// Choose the alert background
@@ -655,5 +587,59 @@ public extension View {
 	/// - Returns: some View
 	fileprivate func textColor(_ color: Color? = nil) -> some View {
 		modifier(TextForegroundModifier(color: color))
+	}
+}
+
+// MARK: - Animated Marks
+
+fileprivate struct AnimatedCheckmark: View {
+	var color: Color = .black
+	var size: Int = 50
+	var height: CGFloat { return CGFloat(size) }
+	var width: CGFloat { return CGFloat(size) }
+	
+	@State private var percentage: CGFloat = .zero
+	
+	var body: some View {
+		Path { path in
+			path.move(to: CGPoint(x: 0, y: height / 2))
+			path.addLine(to: CGPoint(x: width / 2.5, y: height))
+			path.addLine(to: CGPoint(x: width, y: 0))
+		}
+		.trim(from: 0, to: percentage)
+		.stroke(color, style: StrokeStyle(lineWidth: CGFloat(size / 8), lineCap: .round, lineJoin: .round))
+		.animation(Animation.spring().speed(0.75).delay(0.25), value: percentage)
+		.frame(width: width, height: height, alignment: .center)
+		
+		.onAppear {
+			percentage = 1.0
+		}
+	}
+}
+
+fileprivate struct AnimatedXMark: View {
+	var color: Color = .black
+	var size: Int = 50
+	var height: CGFloat { return CGFloat(size) }
+	var width: CGFloat { return CGFloat(size) }
+	var rect: CGRect { return CGRect(x: 0, y: 0, width: size, height: size) }
+	
+	@State private var percentage: CGFloat = .zero
+	
+	var body: some View {
+		Path { path in
+			path.move(to: CGPoint(x: rect.minX, y: rect.minY))
+			path.addLine(to: CGPoint(x: rect.maxY, y: rect.maxY))
+			path.move(to: CGPoint(x: rect.maxX, y: rect.minY))
+			path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+		}
+		.trim(from: 0, to: percentage)
+		.stroke(color, style: StrokeStyle(lineWidth: CGFloat(size / 8), lineCap: .round, lineJoin: .round))
+		.animation(Animation.spring().speed(0.75).delay(0.25), value: percentage)
+		.frame(width: width, height: height, alignment: .center)
+		
+		.onAppear {
+			percentage = 1.0
+		}
 	}
 }

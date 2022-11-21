@@ -9,26 +9,25 @@ import SwiftUI
 
 struct OnboardingPageView: View {
 	@State var onboardingPages: [[OnboardingItemModel]]
-
+	
 	init(onboardingPages: [[OnboardingItemModel]] = OnboardingItemModel.onboardingItems) {
 		self.onboardingPages = onboardingPages
 	}
-
+	
 	var body: some View {
-
 		TabView {
 			ForEach(onboardingPages, id: \.self) { page in
 				VStack(alignment: .leading) {
-					ForEach(page, id: \.id) { item in
+					ForEach(page, id: \.self) { item in
+						
 						OnboardingItem(image: item.imageName, text: LocalizedStringKey(item.description), title: LocalizedStringKey(item.title))
 							.padding(.vertical, 16)
-
 					}
 				}
 				.padding(.horizontal, 16)
 			}
 		}
-		.tabViewStyle(.page(indexDisplayMode: .automatic))
+		.tabViewStyle(.page(indexDisplayMode: .always))
 	}
 }
 

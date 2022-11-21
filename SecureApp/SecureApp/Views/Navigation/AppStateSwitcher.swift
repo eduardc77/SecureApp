@@ -12,13 +12,13 @@ struct AppStateSwitcher: View {
 	@ObservedObject var settingsViewModel: SettingsViewModel
 	@State private var isOnboardingPresented: Bool = false
 	@Environment(\.colorScheme) private var colorScheme
-
+	
 	var body: some View {
 		Group {
 			if appState.state  == .authorized {
 				if !appState.appLocked {
 					AppTabView(settingsViewModel: settingsViewModel)
-
+					
 				} else {
 					AppLockView(viewModel: settingsViewModel)
 				}
@@ -27,18 +27,19 @@ struct AppStateSwitcher: View {
 			}
 		}
 		.navigationViewStyle(.stack)
-		.preferredColorScheme(settingsViewModel.appAppearance == 3 ? colorScheme : settingsViewModel.appAppearance == 1 ? .dark : .light)
 
+		.preferredColorScheme(settingsViewModel.appAppearance == 3 ? colorScheme : settingsViewModel.appAppearance == 1 ? .dark : .light)
+		
 		.onChange(of: appState.onBoardingSheetIsPresented) { newValue in
 			isOnboardingPresented = newValue
 		}
-
+		
 		.onAppear {
 			if appState.isFirstLaunch {
 				appState.onBoardingSheetIsPresented = true
 			}
 		}
-
+		
 		.sheet(isPresented: $isOnboardingPresented) {
 			OnboardingView()
 				.accentColor(settingsViewModel.colors[settingsViewModel.accentColorIndex])

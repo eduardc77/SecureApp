@@ -11,13 +11,13 @@ struct OnboardingView: View {
 	@EnvironmentObject private var appState: UserAppState
 	@Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
 	@Environment(\.colorScheme) private var colorScheme
-
+	
 	var body: some View {
 		VStack {
-			VStack(alignment: .leading, spacing: 10) {
+			VStack(alignment: .leading, spacing: 4) {
 				Text("Welcome to")
 					.font(.system(size: 44).weight(.heavy))
-
+				
 				Text("Secure Note")
 					.font(.system(size: 36).weight(.heavy))
 					.bold()
@@ -26,20 +26,17 @@ struct OnboardingView: View {
 			.frame(maxWidth: .infinity, alignment: .leading)
 			.padding([.horizontal, .top], 40)
 			.padding(.bottom)
-
+			
 			OnboardingPageView()
-
+			
 			Button {
 				presentationMode.wrappedValue.dismiss()
 				appState.isFirstLaunch = false
-
+				
 			} label: {
 				Text("Continue")
-					.frame(maxWidth: .infinity, maxHeight: 48)
-					.foregroundColor(.white)
-					.font(.body.weight(.medium))
 			}
-			.buttonStyle(.mainButtonStyle())
+			.buttonStyle(.mainButtonStyle(height: 56))
 			.padding(40)
 		}
 		.environment(\.colorScheme, colorScheme)
@@ -49,5 +46,6 @@ struct OnboardingView: View {
 struct OnboardingView_Previews: PreviewProvider {
 	static var previews: some View {
 		OnboardingView()
+			.preferredColorScheme(.dark)
 	}
 }

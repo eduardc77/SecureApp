@@ -24,7 +24,7 @@ struct OnboardingItem: View {
 					.font(.largeTitle)
 					.foregroundColor(.white)
 			}
-
+			
 			VStack(alignment: .leading, spacing: 6) {
 				Text(title).bold()
 				

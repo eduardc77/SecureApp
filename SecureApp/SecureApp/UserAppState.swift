@@ -7,57 +7,52 @@
 
 import SwiftUI
 import LocalAuthentication
+import Combine
 
 class UserAppState: ObservableObject {
 	// MARK: - Properties
-
-	@Published private(set) var state: AuthState = .loggedOut
+	
+	@Published var state: AuthState = .loggedOut
 	@Published var appLocked = false
 	@Published var lockAppTimerIsRunning = false
 	@Published var onBoardingSheetIsPresented = false
-
+	
 	@AppStorage("autoLockIndex") var autoLockIndex: Int = 0
 	@AppStorage("isFirstLaunch") var isFirstLaunch: Bool = true
-
+	
 	let authService: AuthService
-
+	
+	// MARK: - Initialization
+	
 	init(authService: AuthService) {
 		self.authService = authService
+		updateCurrentState()
 	}
-
+	
+	// MARK: - Private Methods
+	
+	private func updateCurrentState() {
+		authService.authStatePublisher
+			.receive(on: RunLoop.main)
+			.assign(to: &$state)
+	}
+	
 	// MARK: - Public Methods
-
+	
 	func login(credentials: Credentials, completion: ((Result<Bool, AuthenticationError>) -> Void)? = nil) async {
-		DispatchQueue.main.async {
-			self.state = self.authService.authState
-		}
-
 		await authService.login(credentials: credentials) { (result: Result<Bool, AuthenticationError>) in
 			switch result {
 			case .success:
-				DispatchQueue.main.async {
-					self.state = self.authService.authState
-				}
-
 				completion?(.success(true))
+				
 			case .failure(let authError):
-				DispatchQueue.main.async {
-					self.state = self.authService.authState
-				}
-
 				completion?(.failure(authError))
 			}
 		}
 	}
-
-	func updateAuthState(with state: AuthState) {
-		DispatchQueue.main.async {
-			self.state = state
-		}
-	}
-
+	
 	// MARK: - Biometric Authentication
-
+	
 	static var biometricType: BiometricType {
 		let authContext = LAContext()
 		authContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
@@ -73,19 +68,19 @@ class UserAppState: ObservableObject {
 			return .unknown
 		}
 	}
-
+	
 	func biometricAuthentication(completion: ((Result<Credentials, AuthenticationError>) -> Void)? = nil) {
 		let credentials = KeychainService.getCredentials()
-
+		
 		guard let credentials = credentials else {
 			completion?(.failure(.credentialsNotSaved))
 			return
 		}
-
+		
 		let context = LAContext()
 		var error: NSError?
 		let reason = "Required for logging in to the app."
-
+		
 		if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
 			if let error = error {
 				switch error.code {
@@ -96,10 +91,10 @@ class UserAppState: ObservableObject {
 				default:
 					completion?(.failure(.biometricError))
 				}
-
+				
 				return
 			}
-
+			
 			context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, error in
 				DispatchQueue.main.async {
 					if success {
@@ -117,14 +112,14 @@ class UserAppState: ObservableObject {
 			print("No Device Owner Authentication")
 		}
 	}
-
+	
 	// MARK: - App Lock
-
+	
 	func lockAppInBackground() {
 		lockAppTimerIsRunning = true
 		let seconds: Int = 1 + autoLockIndex * 60
 		let dispatchAfter = DispatchTimeInterval.seconds(seconds)
-
+		
 		DispatchQueue.main.asyncAfter(deadline: .now() + dispatchAfter) {
 			if self.lockAppTimerIsRunning {
 				self.appLocked = true
