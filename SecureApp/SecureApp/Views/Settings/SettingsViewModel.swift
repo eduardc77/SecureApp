@@ -21,7 +21,7 @@ final class SettingsViewModel: ObservableObject {
 	@AppStorage("accentColorIndex") var accentColorIndex: Int = 0
 	
 	let supportsHaptics: Bool = CHHapticEngine.capabilitiesForHardware().supportsHaptics
-	let colors: [Color] = [Color.indigo, .red, .blue, .green, .orange, .purple, .secondary]
+	let colors: [Color] = [.indigo, .red, .blue, .green, .orange, .purple, .gray]
 
 	func copyToClipboard(notes: String) {
 		let copiedNotes = notes

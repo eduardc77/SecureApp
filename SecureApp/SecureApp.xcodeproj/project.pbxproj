@@ -184,7 +184,7 @@
 			children = (
 				DD5933EB2926419200C79D57 /* SettingsView.swift */,
 				DD5933E92926405A00C79D57 /* SettingsViewModel.swift */,
-				DD5933F7292646AC00C79D57 /* SubViews */,
+				DD5933F7292646AC00C79D57 /* Subviews */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -208,7 +208,7 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
-		DD5933F7292646AC00C79D57 /* SubViews */ = {
+		DD5933F7292646AC00C79D57 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
 				DD5933F8292646C100C79D57 /* UnlockMethodToggle.swift */,
@@ -218,7 +218,7 @@
 				DDEF8D912927D9B500642E59 /* ColorSchemeToggle.swift */,
 				DD593400292648DB00C79D57 /* ThemeColorPicker.swift */,
 			);
-			path = SubViews;
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		DD59340429265E4300C79D57 /* Notes */ = {
