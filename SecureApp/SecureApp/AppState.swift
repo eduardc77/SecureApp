@@ -15,7 +15,7 @@ class AppState: ObservableObject {
 	@Published var state: AuthState = .loggedOut
 	@Published var appLocked = false
 	@Published var lockAppTimerIsRunning = false
-	@Published var onBoardingSheetIsPresented = false
+	@Published var welcomeSheetIsPresented = false
 	
 	@AppStorage("autoLockIndex") var autoLockIndex: Int = 0
 	@AppStorage("isFirstLaunch") var isFirstLaunch: Bool = true

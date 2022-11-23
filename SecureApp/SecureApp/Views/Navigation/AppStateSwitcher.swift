@@ -10,7 +10,7 @@ import SwiftUI
 struct AppStateSwitcher: View {
 	@EnvironmentObject private var appState: AppState
 	@ObservedObject var settingsViewModel: SettingsViewModel
-	@State private var isOnboardingPresented: Bool = false
+	@State private var welcomeSheetPresented: Bool = false
 	@Environment(\.colorScheme) private var colorScheme
 	
 	var body: some View {
@@ -30,18 +30,18 @@ struct AppStateSwitcher: View {
 
 		.preferredColorScheme(settingsViewModel.appAppearance == 3 ? colorScheme : settingsViewModel.appAppearance == 1 ? .dark : .light)
 		
-		.onChange(of: appState.onBoardingSheetIsPresented) { newValue in
-			isOnboardingPresented = newValue
+		.onChange(of: appState.welcomeSheetIsPresented) { newValue in
+			welcomeSheetPresented = newValue
 		}
 		
 		.onAppear {
 			if appState.isFirstLaunch {
-				appState.onBoardingSheetIsPresented = true
+				appState.welcomeSheetIsPresented = true
 			}
 		}
 		
-		.sheet(isPresented: $isOnboardingPresented) {
-			OnboardingView()
+		.sheet(isPresented: $welcomeSheetPresented) {
+			WelcomeView()
 				.accentColor(settingsViewModel.colors[settingsViewModel.accentColorIndex])
 		}
 	}
