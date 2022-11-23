@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
-	@EnvironmentObject private var appState: UserAppState
+	@EnvironmentObject private var appState: AppState
 	@StateObject var viewModel: LoginViewModel
 	@StateObject var settingsViewModel: SettingsViewModel
 	@State private var isLoading: Bool = false
@@ -37,7 +37,7 @@ struct LoginView: View {
 				.buttonStyle(.mainButtonStyle())
 				.disabled(viewModel.loginDisabled)
 				
-				if UserAppState.biometricType != .none || UserAppState.biometricType != .unknown {
+				if AppState.biometricType != .none || AppState.biometricType != .unknown {
 					Button {
 						UIApplication.shared.endEditing()
 						
@@ -103,9 +103,11 @@ struct LoginView: View {
 }
 
 
+// MARK: - Previews
+
 struct LoginView_Previews: PreviewProvider {
 	static var previews: some View {
-		LoginView(viewModel: LoginViewModel(appState: UserAppState(authService: AuthService())), settingsViewModel: SettingsViewModel())
-			.environmentObject(UserAppState(authService: AuthService()))
+		LoginView(viewModel: LoginViewModel(appState: AppState(authService: AuthService())), settingsViewModel: SettingsViewModel())
+			.environmentObject(AppState(authService: AuthService()))
 	}
 }

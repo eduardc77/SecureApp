@@ -10,7 +10,7 @@ import SwiftUI
 public extension String {
 	static var adaptiveBiometricImage: String {
 		switch
-		UserAppState.biometricType {
+		AppState.biometricType {
 		case .none:
 			return "key"
 		case .touch:
@@ -24,7 +24,7 @@ public extension String {
 	
 	static var adaptiveBiometricDescription: String  {
 		switch
-		UserAppState.biometricType {
+		AppState.biometricType {
 		case .none:
 			return "Unlock the app with iPhone passcode"
 		case .touch:
@@ -37,7 +37,7 @@ public extension String {
 	}
 	
 	static var adaptiveBiometricMessage: String  {
-		switch UserAppState.biometricType {
+		switch AppState.biometricType {
 		case .none:
 			return "Unlock with iPhone passcode"
 		case .touch:
@@ -50,7 +50,7 @@ public extension String {
 	}
 	
 	static var adaptiveBiometricTitle: String  {
-		switch UserAppState.biometricType {
+		switch AppState.biometricType {
 		case .none:
 			return "iPhone Passcode"
 		case .touch:

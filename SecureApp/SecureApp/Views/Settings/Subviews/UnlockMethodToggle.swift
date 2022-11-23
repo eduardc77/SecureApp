@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UnlockMethodToggle: View {
-	@EnvironmentObject private var appState: UserAppState
+	@EnvironmentObject private var appState: AppState
 	@ObservedObject var viewModel: SettingsViewModel
 	
 	var body: some View {
@@ -16,7 +16,7 @@ struct UnlockMethodToggle: View {
 				 label: {
 			
 			Label(title: {
-				switch UserAppState.biometricType {
+				switch AppState.biometricType {
 				case .none:
 					Text("Unlock with device passcode")
 				case .touch:
@@ -29,7 +29,7 @@ struct UnlockMethodToggle: View {
 			}, icon: {
 
 				Group {
-					switch UserAppState.biometricType {
+					switch AppState.biometricType {
 					case .none:
 						Image(systemName: "key.viewfinder")
 					case .touch:
@@ -44,9 +44,8 @@ struct UnlockMethodToggle: View {
 			})
 		})
 		.toggleStyle(SwitchToggleStyle(tint: .accentColor))
-		
-		.onChange(of: viewModel.biometricUnlockIsActive, perform: { unlockMethodIsActive in
-			
+
+		.onChange(of: viewModel.biometricUnlockIsActive) { unlockMethodIsActive in
 			if unlockMethodIsActive {
 				appState.biometricAuthentication { result in
 					switch result {
@@ -59,12 +58,16 @@ struct UnlockMethodToggle: View {
 			} else {
 				viewModel.biometricUnlockIsActive = false
 			}
-		})
+		}
 	}
 }
+
+
+// MARK: - Previews
 
 struct UnlockMethodToggle_Previews: PreviewProvider {
 	static var previews: some View {
 		UnlockMethodToggle(viewModel: SettingsViewModel())
+			.padding()
 	}
 }

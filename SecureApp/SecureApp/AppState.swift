@@ -9,7 +9,7 @@ import SwiftUI
 import LocalAuthentication
 import Combine
 
-class UserAppState: ObservableObject {
+class AppState: ObservableObject {
 	// MARK: - Properties
 	
 	@Published var state: AuthState = .loggedOut

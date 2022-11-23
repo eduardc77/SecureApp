@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AppLockView: View {
-	@EnvironmentObject var appState: UserAppState
+	@EnvironmentObject var appState: AppState
 	@ObservedObject var viewModel: SettingsViewModel
 	
 	@State private var scale: CGFloat = 1
@@ -76,10 +76,12 @@ struct AppLockView: View {
 	}
 }
 
+
+// MARK: - Previews
+
 struct LoggingView_Previews: PreviewProvider {
 	static var previews: some View {
 		AppLockView(viewModel: SettingsViewModel())
-			.environmentObject(UserAppState(authService: AuthService()))
-			.environmentObject(KeychainService())
+			.environmentObject(AppState(authService: AuthService()))
 	}
 }

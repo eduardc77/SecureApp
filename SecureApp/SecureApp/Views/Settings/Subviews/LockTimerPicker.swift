@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LockTimerPicker: View {
-	@EnvironmentObject var appState: UserAppState
+	@EnvironmentObject var appState: AppState
 	
 	var body: some View {
 		Picker(selection: $appState.autoLockIndex,
@@ -26,9 +26,13 @@ struct LockTimerPicker: View {
 	}
 }
 
+
+// MARK: - Previews
+
 struct LockTimerPicker_Previews: PreviewProvider {
 	static var previews: some View {
 		LockTimerPicker()
-			.environmentObject(UserAppState(authService: AuthService()))
+			.environmentObject(AppState(authService: AuthService()))
+			.padding()
 	}
 }

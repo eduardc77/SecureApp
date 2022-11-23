@@ -44,8 +44,13 @@ struct EntryField: View {
 	}
 }
 
+
+// MARK: - Previews
+
+
 struct EntryField_Previews: PreviewProvider {
 	static var previews: some View {
 		EntryField(text: .constant(""),  systemName: "envelope", placeholder: "Email Address", prompt: "Enter a valid email address")
+			.padding()
 	}
 }

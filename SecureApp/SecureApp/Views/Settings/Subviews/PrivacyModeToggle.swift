@@ -20,8 +20,13 @@ struct PrivacyModeToggle: View {
 	}
 }
 
+
+
+// MARK: - Previews
+
 struct PrivacyModeToggle_Previews: PreviewProvider {
 	static var previews: some View {
 		PrivacyModeToggle(settingsViewModel: SettingsViewModel())
+			.padding()
 	}
 }

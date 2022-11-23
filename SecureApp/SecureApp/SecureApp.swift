@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct SecureApp: App {
-	@StateObject private var appState = UserAppState(authService: AuthService())
+	@StateObject private var appState = AppState(authService: AuthService())
 	@StateObject private var settingsViewModel = SettingsViewModel()
 	@Environment(\.scenePhase) private var scenePhase
 

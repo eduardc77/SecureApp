@@ -21,8 +21,12 @@ struct EphemeralClipboardToggle: View {
 	}
 }
 
+
+// MARK: - Previews
+
 struct EphemeralClipboardToggle_Previews: PreviewProvider {
 	static var previews: some View {
 		EphemeralClipboardToggle(settingsViewModel: SettingsViewModel())
+			.padding()
 	}
 }

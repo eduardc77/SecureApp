@@ -15,6 +15,7 @@ struct ColorSchemeToggle: View {
 			Label(title: { Text("Appearance") },
 					icon: { Image(systemName: "moonphase.first.quarter").font(.title3) })
 			Spacer()
+
 			Picker(selection: $settingsViewModel.appAppearance, label: Text("App Appearance")) {
 				Image(systemName: "sun.max").tag(0)
 				Image(systemName: "moon").tag(1)
@@ -25,8 +26,12 @@ struct ColorSchemeToggle: View {
 	}
 }
 
+
+// MARK: - Previews
+
 struct ColorSchemeToggle_Previews: PreviewProvider {
 	static var previews: some View {
 		EphemeralClipboardToggle(settingsViewModel: SettingsViewModel())
+			.padding()
 	}
 }

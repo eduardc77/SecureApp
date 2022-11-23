@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-	@EnvironmentObject private var appState: UserAppState
+	@EnvironmentObject private var appState: AppState
 	@ObservedObject var settingsViewModel: SettingsViewModel
 	@Environment(\.colorScheme) private var colorScheme
 	
@@ -67,10 +67,12 @@ struct SettingsView: View {
 }
 
 
+
+// MARK: - Previews
+
 struct SettingsView_Previews: PreviewProvider {
 	static var previews: some View {
 		SettingsView(settingsViewModel: SettingsViewModel())
-			.environmentObject(UserAppState(authService: AuthService()))
-			.environmentObject(KeychainService())
+			.environmentObject(AppState(authService: AuthService()))
 	}
 }

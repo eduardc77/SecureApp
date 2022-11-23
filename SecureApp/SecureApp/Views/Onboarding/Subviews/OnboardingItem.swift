@@ -37,6 +37,9 @@ struct OnboardingItem: View {
 	}
 }
 
+
+// MARK: - Previews
+
 struct OnboardingItem_Previews: PreviewProvider {
 	static var previews: some View {
 		OnboardingItem(image: "lock.square", text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", title: "Security")

@@ -85,7 +85,7 @@ enum AuthenticationError: Error, LocalizedError, Identifiable {
 		case .invalidCredentials:
 			return NSLocalizedString("Either your email or password are incorrect. Please try again.", comment: "")
 		case .deniedAccess:
-			return NSLocalizedString("You have denied access. Please go to the settings app and locate this application and turn \(String.adaptiveBiometricTitle) on.", comment: "")
+			return NSLocalizedString("You have denied access. Please go to the settings app, locate this application and turn \(String.adaptiveBiometricTitle) on.", comment: "")
 		case .noBiometricEnrolled:
 			return NSLocalizedString("You have not registered any \(String.adaptiveBiometricTitle)s yet", comment: "")
 		case .biometricError:

@@ -46,6 +46,9 @@ struct NotesView: View {
 	}
 }
 
+
+// MARK: - Previews
+
 struct NotesView_Previews: PreviewProvider {
 	static var previews: some View {
 		NotesView(settingsViewModel: SettingsViewModel())

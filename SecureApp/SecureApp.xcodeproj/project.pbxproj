@@ -33,7 +33,7 @@
 		DD59341629268ED400C79D57 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341529268ED400C79D57 /* Credentials.swift */; };
 		DD59341929268F4F00C79D57 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341829268F4F00C79D57 /* LoginView.swift */; };
 		DD59341B29268F5A00C79D57 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341A29268F5A00C79D57 /* LoginViewModel.swift */; };
-		DD59341D29268FFB00C79D57 /* UserAppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341C29268FFB00C79D57 /* UserAppState.swift */; };
+		DD59341D29268FFB00C79D57 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59341C29268FFB00C79D57 /* AppState.swift */; };
 		DDEF8D8D2927985100642E59 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D8C2927985100642E59 /* LoadingView.swift */; };
 		DDEF8D902927B1BB00642E59 /* MainButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D8F2927B1BB00642E59 /* MainButtonStyle.swift */; };
 		DDEF8D922927D9B500642E59 /* ColorSchemeToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8D912927D9B500642E59 /* ColorSchemeToggle.swift */; };
@@ -72,7 +72,7 @@
 		DD59341529268ED400C79D57 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		DD59341829268F4F00C79D57 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DD59341A29268F5A00C79D57 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		DD59341C29268FFB00C79D57 /* UserAppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAppState.swift; sourceTree = "<group>"; };
+		DD59341C29268FFB00C79D57 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		DDEF8D8C2927985100642E59 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		DDEF8D8F2927B1BB00642E59 /* MainButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButtonStyle.swift; sourceTree = "<group>"; };
 		DDEF8D912927D9B500642E59 /* ColorSchemeToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeToggle.swift; sourceTree = "<group>"; };
@@ -137,7 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				DD5933D229263D8B00C79D57 /* SecureApp.swift */,
-				DD59341C29268FFB00C79D57 /* UserAppState.swift */,
+				DD59341C29268FFB00C79D57 /* AppState.swift */,
 				DD59340B29268E3200C79D57 /* Services */,
 				DD5933E029263DE500C79D57 /* Views */,
 				DD59341429268EC800C79D57 /* Models */,
@@ -382,7 +382,7 @@
 				DD5933FF2926472600C79D57 /* LockTimerPicker.swift in Sources */,
 				DD59341129268E9200C79D57 /* KeychainService.swift in Sources */,
 				DD5933EA2926405A00C79D57 /* SettingsViewModel.swift in Sources */,
-				DD59341D29268FFB00C79D57 /* UserAppState.swift in Sources */,
+				DD59341D29268FFB00C79D57 /* AppState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

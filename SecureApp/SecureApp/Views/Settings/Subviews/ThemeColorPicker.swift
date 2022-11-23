@@ -28,6 +28,9 @@ struct ThemeColorPicker: View {
 	}
 }
 
+
+// MARK: - Previews
+
 struct AccentColorPicker_Previews: PreviewProvider {
 	static var previews: some View {
 		ThemeColorPicker(settingsViewModel: SettingsViewModel())

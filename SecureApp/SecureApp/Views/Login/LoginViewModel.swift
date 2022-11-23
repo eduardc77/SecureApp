@@ -8,11 +8,11 @@
 import Foundation
 
 class LoginViewModel: ObservableObject {
-	@Published var appState: UserAppState
+	@Published var appState: AppState
 	@Published var credentials = Credentials()
 	@Published var error: AuthenticationError?
 	
-	init(appState: UserAppState) {
+	init(appState: AppState) {
 		self.appState = appState
 	}
 	

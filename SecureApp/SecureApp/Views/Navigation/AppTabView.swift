@@ -30,6 +30,9 @@ struct AppTabView: View {
 	}
 }
 
+
+// MARK: - Previews
+
 struct AppTabView_Previews: PreviewProvider {
 	static var previews: some View {
 		AppTabView(settingsViewModel: SettingsViewModel())

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AppStateSwitcher: View {
-	@EnvironmentObject private var appState: UserAppState
+	@EnvironmentObject private var appState: AppState
 	@ObservedObject var settingsViewModel: SettingsViewModel
 	@State private var isOnboardingPresented: Bool = false
 	@Environment(\.colorScheme) private var colorScheme
@@ -47,9 +47,12 @@ struct AppStateSwitcher: View {
 	}
 }
 
+
+// MARK: - Previews
+
 struct AppStateSwitcher_Previews: PreviewProvider {
 	static var previews: some View {
 		AppStateSwitcher(settingsViewModel: SettingsViewModel())
-			.environmentObject(UserAppState(authService: AuthService()))
+			.environmentObject(AppState(authService: AuthService()))
 	}
 }
