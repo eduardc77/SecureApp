@@ -33,6 +33,9 @@ An Example App to test security features and different settings.
 ## Built with:
 - Foundation
 - SwiftUI
+- Combine
+- Async/Await
+- Keychain
 
 
 
