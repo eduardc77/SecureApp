@@ -19,6 +19,12 @@ struct SecureApp: App {
 				.environmentObject(appState)
 				.overlay((settingsViewModel.backgroundPrivacy && !appState.state.isLoading && !appState.appLocked) ? LogoView() : nil)
 				.accentColor(settingsViewModel.colors[settingsViewModel.accentColorIndex])
+
+				.onAppear {
+					if appState.isFirstLaunch {
+						KeychainService.removeValue(forKey: KeychainService.credentialsStorageKey)
+					}
+				}
 		}
 
 		.onChange(of: scenePhase) { newPhase in
@@ -27,8 +33,6 @@ struct SecureApp: App {
 					settingsViewModel.backgroundPrivacy = true
 				}
 			}
-
-
 
 			else if newPhase == .background {
 				if settingsViewModel.privacyMode {
