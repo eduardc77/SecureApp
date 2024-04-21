@@ -34,7 +34,7 @@ An Example App to test security features and different settings.
 - Foundation
 - SwiftUI
 - Combine
-- Async/Await
+- Asynchronous (async/await) Functions
 - Keychain
 
 
